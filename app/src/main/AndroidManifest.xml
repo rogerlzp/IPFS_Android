@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.codeest.geeknews">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+
+    <application
+        android:name="com.codeest.geeknews.app.App"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        //主类
+        <activity
+            android:name=".ui.main.activity.WelcomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.codeest.geeknews.ui.main.activity.MainActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainTheme"></activity>
+
+        //知乎
+        <activity
+            android:name=".ui.zhihu.activity.CalendarActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.zhihu.activity.ZhihuDetailActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".ui.zhihu.activity.CommentActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.zhihu.activity.ThemeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.zhihu.activity.SectionActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        // ipfs
+        <activity
+            android:name=".ui.ipfs.activity.IpfsImageListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ipfs.activity.PubActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ipfs.activity.SubActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <service android:name=".ui.ipfs.activity.IpfsSubService"></service>
+
+        <activity
+        android:name=".ui.ipfs.activity.SwarmActivity"
+        android:launchMode="singleTop"
+        android:screenOrientation="portrait" />
+
+        //Gank
+        <activity
+            android:name=".ui.gank.activity.TechDetailActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".ui.gank.activity.GirlDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        //掘金
+        <activity
+            android:name=".ui.gold.activity.GoldManagerActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        //v2ex
+        <activity
+            android:name=".ui.vtex.activity.NodeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.vtex.activity.NodeListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.vtex.activity.RepliesActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <service android:name=".component.UpdateService" />
+
+        <service android:name=".ipfs.IPFSDaemonService"></service>
+
+    </application>
+
+</manifest>
