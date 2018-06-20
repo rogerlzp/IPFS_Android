@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <Button
+        android:id="@+id/btn_pub_data"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/btn_ipfs_pub_data" />
+
+
+    <Button
+        android:id="@+id/btn_pub_name"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/btn_ipfs_pub_name" />
+
+    <Button
+        android:id="@+id/btn_pub_node"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/btn_ipfs_pub_node" />
+
+
+</LinearLayout>

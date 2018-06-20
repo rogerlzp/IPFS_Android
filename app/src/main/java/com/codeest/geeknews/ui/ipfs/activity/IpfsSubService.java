@@ -7,19 +7,42 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.codeest.geeknews.R;
+import com.codeest.geeknews.net.ReqCallBack;
+import com.codeest.geeknews.net.WCOKHttpClient;
+import com.codeest.geeknews.util.LogUtil;
 import com.codeest.geeknews.util.ToastUtil;
 import com.ipfs.api.IPFSAnroid;
 import com.ipfs.api.entity.Sub;
 
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URI;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Headers;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by zhengpingli on 2018/6/15.
@@ -29,6 +52,7 @@ public class IpfsSubService extends Service {
 
     Timer timer;
     String topic;
+    String readLine="";
 
     public IpfsSubService() {
     }
@@ -42,54 +66,70 @@ public class IpfsSubService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         timer = new Timer();
-        IPFSAnroid ipfsAnroid = new IPFSAnroid();
+
+
+        //   IPFSAnroid ipfsAnroid = new IPFSAnroid("13", "213");
 //        createNotificationChannel();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                ipfsAnroid.pubsub().sub(new Callback<Sub>() {
-                                            @Override
-                                            public void onResponse(Call<Sub> call, Response<Sub> response) {
-                                                ToastUtil.show("pub succeed");
-                                                if(response.body() !=null) {
-                                                    ToastUtil.show(response.body().getData());
-                                                }
-                                            }
+        String path = "http://127.0.0.1:5001/api/v0/pubsub/sub?arg=RussiaCup";
+        StringBuffer buffer = new StringBuffer();
+        try {
+            URL url = new URL(path);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-                                            @Override
-                                            public void onFailure(Call<Sub> call, Throwable t) {
+            connection.setRequestMethod("GET");
+            connection.setDoOutput(false);
+            connection.setDoInput(true);
 
-                                            }
-                                        }, "RussiaCup"
-                );
-//                new IpfsBox().stats().bw(new Callback<Stats_bw>() {
-//                    @Override
-//                    public void onResponse(Call<Stats_bw> call, Response<Stats_bw> response) {
-//                        if (response != null) {
-//                            NotificationManagerCompat.from(BwService.this).notify(1, notification("↑ " + ((int) response.body().getRateOut()) / 1024f + "kb/s" + "\r\n" + "↓ " + ((int) response.body().getRateIn()) / 1024f + "kb/s"));
-//                            EventBus.getDefault().post(response.body());
-//                        }
-//                    }
+            connection.setConnectTimeout(8000);
+            connection.setReadTimeout(8000);
+
+
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        //获取响应状态
+                        connection.connect();
+
+                        int responseCode = connection.getResponseCode();
+                        if (HttpURLConnection.HTTP_OK == responseCode) { //连接成功
+                            //当正确响应时处理数据
+
+
+                            BufferedReader responseReader;//处理响应流
+                            responseReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                            while ((readLine = responseReader.readLine()) != null) {
+                                Handler handler = new Handler(Looper.getMainLooper());
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(IpfsSubService.this,"get result" +readLine,Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                            responseReader.close();
+                        }
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException me) {
+
+                    }
+
+
 //
-//                    @Override
-//                    public void onFailure(Call<Stats_bw> call, Throwable t) {
-//                        if (timer != null) {
-//                            timer.cancel();
-//                        }
-//                        Stats_bw stats_bw = new Stats_bw();
-//                        stats_bw.setRateIn(0);
-//                        stats_bw.setRateOut(0);
-//                        EventBus.getDefault().post(stats_bw);
-//                        NotificationManagerCompat.from(BwService.this).notify(1, notification("↑ " + 0 + "kb/s" + "\r\n" + "↓ " + 0 + "kb/s"));
-//                        NotificationManagerCompat.from(BwService.this).cancel(1);
-//                        stopService(new Intent(BwService.this, BwService.class));
-//                        LogUtils.e(t.getMessage() + "false");
-//
-//                    }
-//                });
-            }
-        }, 0, 1000);
-        return super.onStartCommand(intent, flags, startId);
+                }
+            }, 0, 1000);
+        } catch (MalformedURLException me) {
+            me.printStackTrace();
+        } catch (ProtocolException pe) {
+            pe.printStackTrace();
+        } catch (IOException ie) {
+            ie.printStackTrace();
+        }
+        return super.
+
+                onStartCommand(intent, flags, startId);
+
     }
 
 //    public Notification notification(String arg) {
@@ -110,7 +150,7 @@ public class IpfsSubService extends Service {
 //                .build();
 //    }
 
-//    private void createNotificationChannel() {
+    //    private void createNotificationChannel() {
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            CharSequence name = getString(R.string.app_name);
 //            String description = getString(R.string.app_name);

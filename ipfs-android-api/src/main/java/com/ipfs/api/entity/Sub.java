@@ -26,7 +26,7 @@ public class Sub {
     public String from;
     public String data;
     public String seqno;
-//    public List<String> topicIDs;
+    public List<String> topicIDs;
 
     public String getFrom() {
         return from;
@@ -52,11 +52,11 @@ public class Sub {
         this.seqno = seqno;
     }
 
-//    public List<String> getTopicIDs() {
-//        return topicIDs;
-//    }
-//
-//    public void setTopicIDs(List<String> topicIDs) {
-//        this.topicIDs = topicIDs;
-//    }
+    public List<String> getTopicIDs() {
+        return topicIDs;
+    }
+
+    public void setTopicIDs(List<String> topicIDs) {
+        this.topicIDs = topicIDs;
+    }
 }

@@ -137,6 +137,10 @@ public class Constants {
 
     public static final String IPFS_CMD_ID = "id";
 
+    public static final String IPFS_CMD_PUBSUB_SUB = "pubsub sub";
+
+    public static final String IPFS_NODE_HASH = "ipfs_node_hash";
+
 
     // result OK
     public static final int RESULT_OK = 1;

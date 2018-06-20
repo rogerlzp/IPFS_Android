@@ -33,6 +33,7 @@ import com.codeest.geeknews.model.bean.WXItemBean;
 import com.codeest.geeknews.presenter.ipfs.IpfsPresenter;
 import com.codeest.geeknews.ui.ipfs.activity.IpfsImageListActivity;
 import com.codeest.geeknews.ui.ipfs.activity.PubActivity;
+import com.codeest.geeknews.ui.ipfs.activity.PubNodeActivity;
 import com.codeest.geeknews.ui.ipfs.activity.SubActivity;
 import com.codeest.geeknews.ui.ipfs.activity.SwarmActivity;
 import com.codeest.geeknews.ui.main.activity.MainActivity;
@@ -103,6 +104,10 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
 
     @BindView(R.id.btn_swarm)
     Button btn_swarm;
+
+    @BindView(R.id.btn_pub_node)
+    Button btn_pub_node;
+
 
     @BindView(R.id.et_desc)
     EditText et_desc;
@@ -312,6 +317,14 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
         Intent intent = new Intent(this.getContext(), IpfsImageListActivity.class);
         startActivity(intent);
     }
+
+
+    @OnClick(R.id.btn_pub_node)
+    public void pubNode() {
+        Intent intent = new Intent(this.getContext(), PubNodeActivity.class);
+        startActivity(intent);
+    }
+
     @OnClick(R.id.btn_pub)
     public void pub() {
         Intent intent = new Intent(this.getContext(), PubActivity.class);

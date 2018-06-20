@@ -1,9 +1,12 @@
 package com.codeest.geeknews.ipfs;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.provider.Contacts;
+
+import com.codeest.geeknews.util.LogUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,7 +22,7 @@ import okio.Okio;
 /**
  * Created by zhengpingli on 2018/6/12.
  */
-public class IPFSDaemon {
+public class IPFSDaemonAsyn {
 
     private Context mContext;
 
@@ -28,7 +31,7 @@ public class IPFSDaemon {
      *
      * @return
      */
-    public IPFSDaemon(Context context) {
+    public IPFSDaemonAsyn(Context context) {
         mContext = context;
     }
 
@@ -112,13 +115,40 @@ public class IPFSDaemon {
         Runtime runtime = Runtime.getRuntime();
         try {
             Process process = runtime.exec(command, env);
-            BufferedReader stdoutReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 //            BufferedReader stderrReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 
-            while ((line = stdoutReader.readLine()) != null) {
-//               line += line;
-               sb.append(line);
-            }
+
+//            while ((line = stdoutReader.readLine()) != null) {
+////               line += line;
+//                sb.append(line);
+//            }
+            new Thread() {
+                public void run() {
+                    InputStream ins1 = process.getInputStream();
+                    BufferedReader br1 = new BufferedReader(new InputStreamReader(ins1));
+
+//                    BufferedReader br1 = new BufferedReader(new InputStreamReader(is1));
+                    try {
+                        String line1 = null;
+                        while ((line1 = br1.readLine()) != null) {
+                            if (line1 != null) {
+                                LogUtil.d("IPFS sub command:" + line1);
+//                                if(line1.indexOf("syntax check result:")!=-1){
+//                                    sb.append(line1);
+//                                }
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            ins1.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }.start();
             // "Daemon is ready" 作为启动标识
 
 
@@ -138,7 +168,6 @@ public class IPFSDaemon {
         }
         return sb.toString();
     }
-
 
 
 }

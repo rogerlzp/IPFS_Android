@@ -83,6 +83,13 @@
             android:layout_height="wrap_content"
             android:text="@string/btn_swarm" />
 
+        <Button
+            android:id="@+id/btn_pub_node"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_ipfs_pub_node" />
+
+
         <TextView
             android:id="@+id/tv_ipfs_status"
             android:layout_width="match_parent"

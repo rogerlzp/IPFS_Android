@@ -66,5 +66,9 @@
     <string name="ipfs_address">ipfs 地址</string>
     <string name="btn_swarm">SWARM</string>
 
+    <string name="btn_ipfs_pub_data">发布节点数据</string>
+    <string name="btn_ipfs_pub_node">发布个人节点数据到网络</string>
+    <string name="btn_ipfs_pub_name">发布Node</string>
+
 
 </resources>

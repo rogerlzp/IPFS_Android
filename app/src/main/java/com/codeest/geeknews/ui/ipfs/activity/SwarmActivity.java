@@ -27,8 +27,6 @@ public class SwarmActivity extends SimpleActivity {
     EditText et_address;
 
 
-
-
     @BindView(R.id.btn_swarm)
     Button btn_swarm;
 

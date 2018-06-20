@@ -5,6 +5,7 @@ import com.ipfs.api.entity.Pub;
 import com.ipfs.api.entity.Sub;
 import com.ipfs.api.service.CommandService;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 
@@ -28,17 +29,23 @@ public class Pubsub {
     /**
      * http://127.0.0.1:5001/api/v0/pubsub/pub?arg=RussiaCup&arg=123
      */
-    public void pub(retrofit2.Callback<Pub> callback, String topic, String data) {
+    public void pub(retrofit2.Callback<Void> callback, String topic, String data) {
         CommandService.Pubsub pubsub = retrofit.create(CommandService.Pubsub.class);
-        Call<Pub> get = pubsub.pub(topic, data);
+        Call<Void> get = pubsub.pub(topic, data);
         get.enqueue(callback);
     }
 
 
-    public void sub(retrofit2.Callback<Sub> callback, String topic) {
+//    public void sub(retrofit2.Callback<Sub> callback, String topic) {
+//        CommandService.Pubsub pubsub = retrofit.create(CommandService.Pubsub.class);
+//        Call<Sub> get = pubsub.sub(topic);
+//        get.enqueue(callback);
+//    }
+    public Observable<Sub>  sub(String topic) {
         CommandService.Pubsub pubsub = retrofit.create(CommandService.Pubsub.class);
-        Call<Sub> get = pubsub.sub(topic);
-        get.enqueue(callback);
+        Observable<Sub> subObservable = pubsub.sub(topic);
+        return  subObservable;
+//        get.enqueue(callback);
     }
 
 }

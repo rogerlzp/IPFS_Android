@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.ipfs.api.converter.StringConverterFactory;
 import com.ipfs.api.entity.FileGet;
 import com.ipfs.api.entity.Version;
 import com.ipfs.api.service.CommandService;
@@ -34,9 +35,9 @@ public class IPFSAnroid {
     Retrofit retrofit;
 
     private static final OkHttpClient okHttpClient = new OkHttpClient.Builder().
-            connectTimeout(60, TimeUnit.SECONDS).
-            readTimeout(60, TimeUnit.SECONDS).
-            writeTimeout(60, TimeUnit.SECONDS).build();
+            connectTimeout(300, TimeUnit.SECONDS).
+            readTimeout(300, TimeUnit.SECONDS).
+            writeTimeout(300, TimeUnit.SECONDS).build();
 
     Gson gson = new GsonBuilder()
             .setLenient()
@@ -45,6 +46,7 @@ public class IPFSAnroid {
      * default url
      */
     private String gateway = "http://127.0.0.1:8080";
+    private String baseUrl = "http://127.0.0.1:5001";
 
     public IPFSAnroid() {
         this("http://127.0.0.1:5001");
@@ -53,12 +55,19 @@ public class IPFSAnroid {
     public IPFSAnroid(String baseUrl) {
         retrofit = new Retrofit.Builder().baseUrl(baseUrl + "/api/v0/")
                 .client(okHttpClient)
+
                 .addConverterFactory(GsonConverterFactory.create(gson)).build();
     }
 
-    public IPFSAnroid(String gateway, String prefix) {
-        retrofit = new Retrofit.Builder().baseUrl(gateway + "/api/v0/").addConverterFactory(GsonConverterFactory.create(gson)).build();
+    public IPFSAnroid(String baseUrl, String stringConverter) {
+        retrofit = new Retrofit.Builder().baseUrl(this.baseUrl + "/api/v0/")
+                .client(okHttpClient)
+                .addConverterFactory(StringConverterFactory.create()).build();
     }
+
+//    public IPFSAnroid(String gateway, String prefix) {
+//        retrofit = new Retrofit.Builder().baseUrl(gateway + "/api/v0/").addConverterFactory(GsonConverterFactory.create(gson)).build();
+//    }
 
     public void version(retrofit2.Callback<Version> callback) {
         CommandService commandService = retrofit.create(CommandService.class);
@@ -119,6 +128,10 @@ public class IPFSAnroid {
 
     public SwarmService swarm() {
         return new SwarmService(retrofit);
+    }
+
+    public NameService name() {
+        return new NameService(retrofit);
     }
 
 }
