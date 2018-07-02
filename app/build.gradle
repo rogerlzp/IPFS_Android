@@ -146,4 +146,8 @@ dependencies {
     implementation group: 'org.ethereum', name: 'geth', version: '1.7.3'
 
 
+    // RxBus
+    compile 'org.greenrobot:eventbus:3.1.1'
+
+
 }

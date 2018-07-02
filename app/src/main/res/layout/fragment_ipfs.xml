@@ -3,12 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/view_toolbar" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,19 +36,21 @@
                 android:id="@+id/btn_check_Ipfs_version"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/check_Ipfs_version" />
+                android:text="@string/check_Ipfs_version"
+                android:visibility="gone" />
 
             <TextView
+                android:id="@+id/tv_ipfs_stats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_ipfs_stats"
-                android:text="stats"
-                />
+                android:text="stats" />
 
             <Button
                 android:id="@+id/btn_checkID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/button_radius"
+                android:enabled="false"
                 android:text="@string/btn_checkIpfsID" />
 
             <Button
@@ -69,42 +75,55 @@
                 android:id="@+id/btn_upload"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/button_radius"
+                android:enabled="false"
                 android:text="@string/btn_upload" />
 
             <Button
                 android:id="@+id/btn_check_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_check_image" />
+                android:text="@string/btn_check_image"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/btn_pub"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/button_radius"
+                android:enabled="false"
                 android:text="@string/btn_pub" />
 
             <Button
                 android:id="@+id/btn_sub"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/button_radius"
+                android:enabled="false"
                 android:text="@string/btn_sub" />
 
             <Button
                 android:id="@+id/btn_swarm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/button_radius"
+                android:enabled="false"
                 android:text="@string/btn_swarm" />
 
             <Button
                 android:id="@+id/btn_pub_node"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/button_radius"
+                android:enabled="false"
                 android:text="@string/btn_ipfs_pub_node" />
 
             <Button
                 android:id="@+id/btn_ipfs_channel_node"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/button_radius"
+                android:enabled="false"
                 android:text="@string/ipfs_channel_node" />
 
 

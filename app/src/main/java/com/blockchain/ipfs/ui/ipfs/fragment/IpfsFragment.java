@@ -25,6 +25,7 @@ import com.blockchain.ipfs.app.App;
 import com.blockchain.ipfs.app.Constants;
 import com.blockchain.ipfs.base.RootFragment;
 import com.blockchain.ipfs.base.contract.ipfs.IpfsContract;
+import com.blockchain.ipfs.component.RxBus;
 import com.blockchain.ipfs.ipfs.IPFSDaemon;
 import com.blockchain.ipfs.ipfs.IPFSDaemonService;
 import com.blockchain.ipfs.model.bean.ImageBean;
@@ -34,6 +35,7 @@ import com.blockchain.ipfs.ui.ipfs.activity.PubActivity;
 import com.blockchain.ipfs.ui.ipfs.activity.PubNodeActivity;
 import com.blockchain.ipfs.ui.ipfs.activity.SubActivity;
 import com.blockchain.ipfs.ui.ipfs.activity.SwarmActivity;
+import com.blockchain.ipfs.ui.ipfs.event.DaemonEvent;
 import com.blockchain.ipfs.util.PermissionUtil;
 import com.blockchain.ipfs.R;
 import com.blockchain.ipfs.app.App;
@@ -68,11 +70,17 @@ import com.blockchain.ipfs.ui.ipfs.activity.PubNodeActivity;
 import com.blockchain.ipfs.ui.ipfs.activity.SubActivity;
 import com.blockchain.ipfs.ui.ipfs.activity.SwarmActivity;
 import com.blockchain.ipfs.util.PermissionUtil;
+//import com.hwangjr.rxbus.RxBus;
+import com.blockchain.ipfs.util.ToastUtil;
 import com.ipfs.api.IPFSAnroid;
 import com.ipfs.api.entity.FileAdd;
 import com.ipfs.api.entity.StatsBwEntity;
 import com.ipfs.api.entity.Version;
 
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -192,7 +200,30 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
         super.initEventAndData();
         registerReceiver();
 
+        EventBus.getDefault().register(this);
+//        RxBus.get().register(this);
     }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+//        RxBus.get().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDaemonEvent(DaemonEvent event) {
+        ToastUtil.show(event.message);
+        checkIpfsVersion();
+        btn_upload.setEnabled(true);
+        btn_checkID.setEnabled(true);
+        btn_pub.setEnabled(true);
+        btn_sub.setEnabled(true);
+        btn_swarm.setEnabled(true);
+        btn_pub_node.setEnabled(true);
+
+    }
+
 
     @Override
     public void showContent(List<WXItemBean> list) {
@@ -234,7 +265,6 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
         if (!ipfsDaemon.isIpfsInitalized()) {
             ipfsDaemon.initIpfs();
         }
-
         IPFSDaemonService.startStopIPFSDaemon(this.getContext(), isIPFSDaemonRunning ? Constants.IPFS_ACTION_STOP : Constants.IPFS_ACTION_START);
         isIPFSDaemonRunning = !isIPFSDaemonRunning;
     }
@@ -245,8 +275,6 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
         IPFSDaemon ipfsDaemon = new IPFSDaemon(mContext);
         String IdInfo = ipfsDaemon.runCmd(Constants.IPFS_CMD_ID); // 启动脚本
         tv_ipfs_status.setText(IdInfo);
-
-
     }
 
 
@@ -301,17 +329,6 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
         IPFSAnroid ipfsAnroid = new IPFSAnroid();
 
         File testFile = new File(filePath);
-//        if (!testFile.exists()) {
-//            try {
-//                testFile.createNewFile();
-//                PrintStream ps = new PrintStream(new FileOutputStream(testFile));
-//                ps.println("write from IPFS");// 往文件里写入字符串
-//                ps.close();
-//            } catch (IOException ie) {
-//
-//            }
-//        }
-
         ipfsAnroid.add(new Callback<FileAdd>() {
             @Override
             public void onResponse(Call<FileAdd> call, Response<FileAdd> response) {
@@ -401,12 +418,12 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
             Uri uri = data.getData();
             if ("file".equalsIgnoreCase(uri.getScheme())) {//使用第三方应用打开
                 filePath = uri.getPath();
-                tv_filename.setText(filePath.substring(filePath.lastIndexOf("/"), filePath.length() - 1));
+                tv_filename.setText(filePath.substring(filePath.lastIndexOf("/"), filePath.length()));
                 return;
             }
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {//4.4以后
                 filePath = getPath(this.getContext(), uri);
-                tv_filename.setText(filePath.substring(filePath.lastIndexOf("/"), filePath.length() - 1));
+                tv_filename.setText(filePath.substring(filePath.lastIndexOf("/"), filePath.length()));
                 return;
             } else {//4.4以下下系统调用方法 nothing
 //                path = getRealPathFromURI(uri);

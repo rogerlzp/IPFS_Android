@@ -103,7 +103,6 @@ public class SubActivity extends SimpleActivity implements IpfsSubService.SupCal
     @Override
     protected void initEventAndData() {
 
-
     }
 
     @OnClick(R.id.btn_sub)

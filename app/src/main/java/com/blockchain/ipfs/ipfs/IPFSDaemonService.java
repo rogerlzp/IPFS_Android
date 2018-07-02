@@ -48,12 +48,10 @@ public class IPFSDaemonService extends IntentService {
 
 
     public static void startStopIPFSDaemon(Context context, String action) {
-
         mContext = context;
         Intent intent = new Intent(context, IPFSDaemonService.class);
         intent.setAction(action);
         context.startService(intent);
-
     }
 
 //    public void createStatus(){

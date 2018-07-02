@@ -2,31 +2,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/view_toolbar" />
 
-    <EditText android:layout_height="100dp"
-        android:layout_width="match_parent"
+    <EditText
         android:id="@+id/et_topic"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
         android:hint="@string/topic"
-        />
+        android:text="@string/sub_publish_node" />
 
 
     <Button
+        android:id="@+id/btn_sub"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:id="@+id/btn_sub"
-        android:text="@string/btn_sub"
-        />
+        android:text="@string/btn_sub" />
 
 
-    <TextView android:layout_height="400dp"
-        android:layout_width="match_parent"
+    <TextView
         android:id="@+id/tv_message"
-        android:hint="@string/pubsub_data"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:hint="@string/pubsub_data" />
 
 </LinearLayout>

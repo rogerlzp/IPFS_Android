@@ -5,6 +5,11 @@ import android.content.Context;
 import android.os.Build;
 import android.provider.Contacts;
 
+import com.blockchain.ipfs.component.RxBus;
+import com.blockchain.ipfs.ui.ipfs.event.DaemonEvent;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -99,14 +104,12 @@ public class IPFSDaemon {
         return runCmd("init"); //返回init 命令结果
     }
 
-    public boolean isIpfsInitalized()
-    {
-       return getBinaryFile().exists();
+    public boolean isIpfsInitalized() {
+        return getBinaryFile().exists();
     }
 
     public String runCmd(String cmd) {
         String[] env = new String[]{"IPFS_PATH=" + getRepoPath().getAbsoluteFile()};
-//        env[0] = "IPFS_PATH=" + getRepoPath().getAbsoluteFile();
         String command = getBinaryFile().getAbsolutePath() + " " + cmd;
 
         String line = "";
@@ -121,7 +124,13 @@ public class IPFSDaemon {
 
             while ((line = stdoutReader.readLine()) != null) {
 //               line += line;
-               sb.append(line);
+                sb.append(line);
+                if (line.equals("Daemon is ready")) {
+                    //启动成功，返回
+
+                    EventBus.getDefault().post(new DaemonEvent("Daemon is ready"));
+
+                }
             }
             // "Daemon is ready" 作为启动标识
 
@@ -142,7 +151,6 @@ public class IPFSDaemon {
         }
         return sb.toString();
     }
-
 
 
 }
