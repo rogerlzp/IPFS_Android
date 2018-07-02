@@ -29,7 +29,7 @@ import com.blockchain.ipfs.widget.DefaultItemTouchHelpCallback;
 import java.util.Collections;
 
 import butterknife.BindView;
-import io.realm.RealmList;
+//import io.realm.RealmList;
 
 /**
  * Created by codeest on 16/11/27.
@@ -42,7 +42,7 @@ public class GoldManagerActivity extends SimpleActivity {
     @BindView(R.id.rv_gold_manager_list)
     RecyclerView rvGoldManagerList;
 
-    RealmList<GoldManagerItemBean> mList;
+//    RealmList<GoldManagerItemBean> mList;
     GoldManagerAdapter mAdapter;
     DefaultItemTouchHelpCallback mCallback;
 
@@ -54,8 +54,8 @@ public class GoldManagerActivity extends SimpleActivity {
     @Override
     protected void initEventAndData() {
         setToolBar(toolBar, "首页特别展示");
-        mList = ((GoldManagerBean) getIntent().getParcelableExtra(Constants.IT_GOLD_MANAGER)).getManagerList();
-        mAdapter = new GoldManagerAdapter(mContext, mList);
+//        mList = ((GoldManagerBean) getIntent().getParcelableExtra(Constants.IT_GOLD_MANAGER)).getManagerList();
+//        mAdapter = new GoldManagerAdapter(mContext, mList);
         rvGoldManagerList.setLayoutManager(new LinearLayoutManager(mContext));
         rvGoldManagerList.setAdapter(mAdapter);
         mCallback = new DefaultItemTouchHelpCallback(new DefaultItemTouchHelpCallback.OnItemTouchCallbackListener() {
@@ -65,11 +65,11 @@ public class GoldManagerActivity extends SimpleActivity {
 
             @Override
             public boolean onMove(int srcPosition, int targetPosition) {
-                if (mList != null) {
-                    Collections.swap(mList, srcPosition, targetPosition);
-                    mAdapter.notifyItemMoved(srcPosition, targetPosition);
-                    return true;
-                }
+//                if (mList != null) {
+//                    Collections.swap(mList, srcPosition, targetPosition);
+//                    mAdapter.notifyItemMoved(srcPosition, targetPosition);
+//                    return true;
+//                }
                 return false;
             }
         });
@@ -82,6 +82,6 @@ public class GoldManagerActivity extends SimpleActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getDefault().post(new GoldManagerBean(mList));
+//        RxBus.getDefault().post(new GoldManagerBean(mList));
     }
 }

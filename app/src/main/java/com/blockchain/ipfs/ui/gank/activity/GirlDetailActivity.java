@@ -58,7 +58,7 @@ public class GirlDetailActivity extends SimpleActivity {
 
     Bitmap bitmap;
     RxPermissions rxPermissions;
-    RealmHelper mRealmHelper;
+//    RealmHelper mRealmHelper;
     PhotoViewAttacher mAttacher;
     MenuItem menuItem;
 
@@ -75,7 +75,7 @@ public class GirlDetailActivity extends SimpleActivity {
     @Override
     protected void initEventAndData() {
         setToolBar(toolBar,"");
-        mRealmHelper = App.getAppComponent().realmHelper();
+//        mRealmHelper = App.getAppComponent().realmHelper();
         Intent intent = getIntent();
         url = intent.getExtras().getString(Constants.IT_GANK_GRIL_URL);
         id = intent.getExtras().getString(Constants.IT_GANK_GRIL_ID);
@@ -95,7 +95,7 @@ public class GirlDetailActivity extends SimpleActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.girl_menu,menu);
         menuItem = menu.findItem(R.id.action_like);
-        setLikeState(mRealmHelper.queryLikeId(id));
+//        setLikeState(mRealmHelper.queryLikeId(id));
         return true;
     }
 
@@ -106,7 +106,7 @@ public class GirlDetailActivity extends SimpleActivity {
             case R.id.action_like:
                 if(isLiked) {
                     item.setIcon(R.mipmap.ic_toolbar_like_n);
-                    mRealmHelper.deleteLikeBean(this.id);
+//                    mRealmHelper.deleteLikeBean(this.id);
                     isLiked = false;
                 } else {
                     item.setIcon(R.mipmap.ic_toolbar_like_p);
@@ -115,7 +115,7 @@ public class GirlDetailActivity extends SimpleActivity {
                     bean.setImage(url);
                     bean.setType(Constants.TYPE_GIRL);
                     bean.setTime(System.currentTimeMillis());
-                    mRealmHelper.insertLikeBean(bean);
+//                    mRealmHelper.insertLikeBean(bean);
                     isLiked = true;
                 }
                 break;

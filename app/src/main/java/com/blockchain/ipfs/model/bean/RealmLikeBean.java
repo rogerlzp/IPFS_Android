@@ -1,20 +1,20 @@
 package com.blockchain.ipfs.model.bean;
 
 import java.io.Serializable;
-
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
+//
+//import io.realm.RealmObject;
+//import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by codeest on 16/8/23.
  * 用于数据库的bean 种类包括 新闻、技术、福利
  */
 
-public class RealmLikeBean extends RealmObject implements Serializable{
+public class RealmLikeBean  implements Serializable{
 
     public RealmLikeBean() { }
 
-    @PrimaryKey
+//    @PrimaryKey
     private String id;
 
     private String image;

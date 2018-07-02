@@ -87,7 +87,7 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.realm.RealmObjectSchema;
+//import io.realm.RealmObjectSchema;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;

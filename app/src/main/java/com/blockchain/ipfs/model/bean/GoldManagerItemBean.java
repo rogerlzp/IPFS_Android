@@ -3,13 +3,13 @@ package com.blockchain.ipfs.model.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import io.realm.RealmObject;
+//import io.realm.RealmObject;
 
 /**
  * Created by codeest on 16/12/1.
  */
 
-public class GoldManagerItemBean extends RealmObject implements Parcelable {
+public class GoldManagerItemBean implements Parcelable {
 
     private int index;
 

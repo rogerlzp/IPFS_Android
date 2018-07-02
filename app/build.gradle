@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'realm-android'
+//apply plugin: 'realm-android'
 apply plugin: 'org.greenrobot.greendao'
 
 
@@ -41,20 +41,20 @@ android {
 
     }
 
-    packagingOptions {
-        exclude "lib/mips/librealm-jni.so"
-        exclude "lib/x86/librealm-jni.so"
-        exclude "lib/x86_64/librealm-jni.so"
-    }
-
+//    packagingOptions {
+//        exclude "lib/mips/librealm-jni.so"
+//        exclude "lib/x86/librealm-jni.so"
+//        exclude "lib/x86_64/librealm-jni.so"
+//    }
+//
     splits {
         abi {
             enable true
             reset()
             //https://stackoverflow.com/questions/49518003/not-able-to-update-android-studio-3-1-conflicting-configuration-armeabi-v7a
             // just use armeabi for now, remove      'armeabi-v7a', 'arm64-v8a'
-            include 'armeabi'
-            universalApk true
+            include 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+//            universalApk true
         }
     }
 //    buildToolsVersion '26.0.2'

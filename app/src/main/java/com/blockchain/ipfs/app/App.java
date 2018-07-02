@@ -24,18 +24,19 @@ import com.blockchain.ipfs.component.InitializeService;
 import com.blockchain.ipfs.di.component.AppComponent;
 import com.blockchain.ipfs.di.module.AppModule;
 import com.blockchain.ipfs.di.module.HttpModule;
+import com.blockchain.ipfs.model.db.GreenDaoHelper;
 
 import org.greenrobot.greendao.database.Database;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import io.realm.Realm;
+//import io.realm.Realm;
 
 /**
  * Created by codeest on 2016/8/2.
  */
-public class App extends Application{
+public class App extends Application {
 
     private static App instance;
     public static AppComponent appComponent;
@@ -70,8 +71,8 @@ public class App extends Application{
         getScreenSize();
 
         //初始化数据库
-        Realm.init(getApplicationContext());
-
+//        Realm.init(getApplicationContext());
+        GreenDaoHelper greenDaoHelper = new GreenDaoHelper();
         //初始化sqlite db
         initSQLiteDatabase();
 
@@ -124,7 +125,7 @@ public class App extends Application{
     }
 
     public void getScreenSize() {
-        WindowManager windowManager = (WindowManager)this.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics dm = new DisplayMetrics();
         Display display = windowManager.getDefaultDisplay();
         display.getMetrics(dm);
@@ -132,14 +133,14 @@ public class App extends Application{
         DIMEN_DPI = dm.densityDpi;
         SCREEN_WIDTH = dm.widthPixels;
         SCREEN_HEIGHT = dm.heightPixels;
-        if(SCREEN_WIDTH > SCREEN_HEIGHT) {
+        if (SCREEN_WIDTH > SCREEN_HEIGHT) {
             int t = SCREEN_HEIGHT;
             SCREEN_HEIGHT = SCREEN_WIDTH;
             SCREEN_WIDTH = t;
         }
     }
 
-    public static AppComponent getAppComponent(){
+    public static AppComponent getAppComponent() {
         if (appComponent == null) {
             appComponent = DaggerAppComponent.builder()
                     .appModule(new AppModule(instance))

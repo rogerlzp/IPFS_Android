@@ -18,7 +18,7 @@ import com.blockchain.ipfs.ui.gold.fragment.GoldMainFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.RealmList;
+//import io.realm.RealmList;
 
 import static com.blockchain.ipfs.ui.gold.fragment.GoldMainFragment.typeStr;
 
@@ -28,13 +28,13 @@ import static com.blockchain.ipfs.ui.gold.fragment.GoldMainFragment.typeStr;
 
 public class GoldManagerAdapter extends RecyclerView.Adapter<GoldManagerAdapter.ViewHolder> {
 
-        private RealmList<GoldManagerItemBean> mList;
+//        private RealmList<GoldManagerItemBean> mList;
         private LayoutInflater inflater;
 
-    public GoldManagerAdapter(Context mContext, RealmList<GoldManagerItemBean> mList) {
-            inflater = LayoutInflater.from(mContext);
-            this.mList = mList;
-        }
+//    public GoldManagerAdapter(Context mContext, RealmList<GoldManagerItemBean> mList) {
+//            inflater = LayoutInflater.from(mContext);
+//            this.mList = mList;
+//        }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,14 +43,14 @@ public class GoldManagerAdapter extends RecyclerView.Adapter<GoldManagerAdapter.
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.tvType.setText(GoldMainFragment.typeStr[mList.get(position).getIndex()]);
-            holder.scSwitch.setChecked(mList.get(position).getIsSelect());
-            holder.scSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    mList.get(holder.getAdapterPosition()).setSelect(b);
-                }
-            });
+//            holder.tvType.setText(GoldMainFragment.typeStr[mList.get(position).getIndex()]);
+//            holder.scSwitch.setChecked(mList.get(position).getIsSelect());
+//            holder.scSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                    mList.get(holder.getAdapterPosition()).setSelect(b);
+//                }
+//            });
         }
 
         @Override

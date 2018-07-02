@@ -4,6 +4,7 @@ import com.blockchain.ipfs.app.App;
 import com.blockchain.ipfs.di.module.AppModule;
 import com.blockchain.ipfs.di.module.HttpModule;
 import com.blockchain.ipfs.model.DataManager;
+import com.blockchain.ipfs.model.db.GreenDaoHelper;
 import com.blockchain.ipfs.model.db.RealmHelper;
 import com.blockchain.ipfs.model.http.RetrofitHelper;
 import com.blockchain.ipfs.model.prefs.ImplPreferencesHelper;
@@ -26,7 +27,8 @@ public interface AppComponent {
 
     RetrofitHelper retrofitHelper();  //提供http的帮助类
 
-    RealmHelper realmHelper();    //提供数据库帮助类
+    //    RealmHelper realmHelper();    //提供数据库帮助类
+    GreenDaoHelper greenDaoHelper();
 
     ImplPreferencesHelper preferencesHelper(); //提供sp帮助类
 }

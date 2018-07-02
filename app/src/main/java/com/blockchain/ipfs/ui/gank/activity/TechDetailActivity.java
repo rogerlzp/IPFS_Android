@@ -57,11 +57,11 @@ public class TechDetailActivity extends SimpleActivity {
     @BindView(R.id.tv_progress)
     TextView tvProgress;
 
-    RealmHelper mRealmHelper;
+    //    RealmHelper mRealmHelper;
     ImplPreferencesHelper mImplPreferencesHelper;
     MenuItem menuItem;
 
-    String title,url,imgUrl,id;
+    String title, url, imgUrl, id;
     int type;
     boolean isLiked;
 
@@ -72,7 +72,7 @@ public class TechDetailActivity extends SimpleActivity {
 
     @Override
     protected void initEventAndData() {
-        mRealmHelper = App.getAppComponent().realmHelper();
+//        mRealmHelper = App.getAppComponent().realmHelper();
         mImplPreferencesHelper = App.getAppComponent().preferencesHelper();
         Intent intent = getIntent();
         type = intent.getExtras().getInt(Constants.IT_GANK_DETAIL_TYPE);
@@ -80,7 +80,7 @@ public class TechDetailActivity extends SimpleActivity {
         url = intent.getExtras().getString(Constants.IT_GANK_DETAIL_URL);
         imgUrl = intent.getExtras().getString(Constants.IT_GANK_DETAIL_IMG_URL);
         id = intent.getExtras().getString(Constants.IT_GANK_DETAIL_ID);
-        setToolBar(toolBar,title);
+        setToolBar(toolBar, title);
         WebSettings settings = wvTechContent.getSettings();
         if (mImplPreferencesHelper.getNoImageState()) {
             settings.setBlockNetworkImage(true);
@@ -99,14 +99,14 @@ public class TechDetailActivity extends SimpleActivity {
         settings.setLoadWithOverviewMode(true);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setSupportZoom(true);
-        wvTechContent.setWebViewClient(new WebViewClient(){
+        wvTechContent.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;
             }
         });
-        wvTechContent.setWebChromeClient(new WebChromeClient(){
+        wvTechContent.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
@@ -120,6 +120,7 @@ public class TechDetailActivity extends SimpleActivity {
                     lp.width = App.SCREEN_WIDTH * newProgress / 100;
                 }
             }
+
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
@@ -141,17 +142,18 @@ public class TechDetailActivity extends SimpleActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.tech_meun, menu);
         menuItem = menu.findItem(R.id.action_like);
-        setLikeState(mRealmHelper.queryLikeId(id));
+//        setLikeState(mRealmHelper.queryLikeId(id));
         return true;
     }
 
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_like:
-                if(isLiked) {
+                if (isLiked) {
                     item.setIcon(R.mipmap.ic_toolbar_like_n);
-                    mRealmHelper.deleteLikeBean(this.id);
+//                    mRealmHelper.deleteLikeBean(this.id);
                     isLiked = false;
                 } else {
                     item.setIcon(R.mipmap.ic_toolbar_like_p);
@@ -162,21 +164,21 @@ public class TechDetailActivity extends SimpleActivity {
                     bean.setTitle(title);
                     bean.setType(type);
                     bean.setTime(System.currentTimeMillis());
-                    mRealmHelper.insertLikeBean(bean);
+//                    mRealmHelper.insertLikeBean(bean);
                     isLiked = true;
                 }
                 break;
             case R.id.action_copy:
-                SystemUtil.copyToClipBoard(mContext,url);
+                SystemUtil.copyToClipBoard(mContext, url);
                 return true;
             case R.id.action_share:
-                ShareUtil.shareText(mContext,url,"分享一篇文章");
+                ShareUtil.shareText(mContext, url, "分享一篇文章");
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void setLikeState(boolean state) {
-        if(state) {
+        if (state) {
             menuItem.setIcon(R.mipmap.ic_toolbar_like_p);
             isLiked = true;
         } else {
@@ -256,7 +258,7 @@ public class TechDetailActivity extends SimpleActivity {
             intent.putExtra(Constants.IT_GANK_DETAIL_ID, builder.id);
             intent.putExtra(Constants.IT_GANK_DETAIL_TYPE, builder.type);
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(builder.mActivity, builder.shareView, "shareView");
-            builder.mContext.startActivity(intent,options.toBundle());
+            builder.mContext.startActivity(intent, options.toBundle());
         } else {
             Intent intent = new Intent();
             intent.setClass(builder.mContext, TechDetailActivity.class);

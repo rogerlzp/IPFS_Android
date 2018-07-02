@@ -30,7 +30,7 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
-import io.realm.RealmList;
+//import io.realm.RealmList;
 
 /**
  * Created by zhengpingli on 2018/6/14.

@@ -11,7 +11,7 @@ import com.blockchain.ipfs.widget.CommonSubscriber;
 
 import javax.inject.Inject;
 
-import io.realm.RealmList;
+//import io.realm.RealmList;
 
 /**
  * Created by codeest on 16/11/28.
@@ -20,7 +20,7 @@ import io.realm.RealmList;
 public class GoldMainPresenter extends RxPresenter<GoldMainContract.View> implements GoldMainContract.Presenter{
 
     private DataManager mDataManager;
-    private RealmList<GoldManagerItemBean> mList;
+//    private RealmList<GoldManagerItemBean> mList;
 
     @Inject
     public GoldMainPresenter(DataManager mDataManager) {
@@ -40,7 +40,7 @@ public class GoldMainPresenter extends RxPresenter<GoldMainContract.View> implem
                     @Override
                     public void onNext(GoldManagerBean goldManagerBean) {
                         mDataManager.updateGoldManagerList(goldManagerBean);
-                        mView.updateTab(goldManagerBean.getManagerList());
+//                        mView.updateTab(goldManagerBean.getManagerList());
                     }
 
                     @Override
@@ -57,16 +57,16 @@ public class GoldMainPresenter extends RxPresenter<GoldMainContract.View> implem
         if (mDataManager.getManagerPoint()) {
             //第一次使用，生成默认ManagerList
             initList();
-            mDataManager.updateGoldManagerList(new GoldManagerBean(mList));
-            mView.updateTab(mList);
+//            mDataManager.updateGoldManagerList(new GoldManagerBean(mList));
+//            mView.updateTab(mList);
         } else {
             if (mDataManager.getGoldManagerList() == null) {
                 initList();
-                mDataManager.updateGoldManagerList(new GoldManagerBean(mList));
+//                mDataManager.updateGoldManagerList(new GoldManagerBean(mList));
             } else {
-                mList = mDataManager.getGoldManagerList().getManagerList();
+//                mList = mDataManager.getGoldManagerList().getManagerList();
             }
-            mView.updateTab(mList);
+//            mView.updateTab(mList);
         }
     }
 
@@ -76,14 +76,14 @@ public class GoldMainPresenter extends RxPresenter<GoldMainContract.View> implem
     }
 
     private void initList() {
-        mList = new RealmList<>();
-        mList.add(new GoldManagerItemBean(0, true));
-        mList.add(new GoldManagerItemBean(1, true));
-        mList.add(new GoldManagerItemBean(2, true));
-        mList.add(new GoldManagerItemBean(3, true));
-        mList.add(new GoldManagerItemBean(4, false));
-        mList.add(new GoldManagerItemBean(5, false));
-        mList.add(new GoldManagerItemBean(6, false));
-        mList.add(new GoldManagerItemBean(7, false));
+//        mList = new RealmList<>();
+//        mList.add(new GoldManagerItemBean(0, true));
+//        mList.add(new GoldManagerItemBean(1, true));
+//        mList.add(new GoldManagerItemBean(2, true));
+//        mList.add(new GoldManagerItemBean(3, true));
+//        mList.add(new GoldManagerItemBean(4, false));
+//        mList.add(new GoldManagerItemBean(5, false));
+//        mList.add(new GoldManagerItemBean(6, false));
+//        mList.add(new GoldManagerItemBean(7, false));
     }
 }

@@ -3,6 +3,7 @@ package com.blockchain.ipfs.di.module;
 import com.blockchain.ipfs.app.App;
 import com.blockchain.ipfs.model.DataManager;
 import com.blockchain.ipfs.model.db.DBHelper;
+import com.blockchain.ipfs.model.db.GreenDaoHelper;
 import com.blockchain.ipfs.model.db.RealmHelper;
 import com.blockchain.ipfs.model.http.HttpHelper;
 import com.blockchain.ipfs.model.http.RetrofitHelper;
@@ -40,9 +41,12 @@ public class AppModule {
 
     @Provides
     @Singleton
-    DBHelper provideDBHelper(RealmHelper realmHelper) {
-        return realmHelper;
+    DBHelper provideDBHelper(GreenDaoHelper greenDaoHelper) {
+        return greenDaoHelper;
     }
+//    DBHelper provideDBHelper(RealmHelper realmHelper) {
+//        return realmHelper;
+//    }
 
     @Provides
     @Singleton
