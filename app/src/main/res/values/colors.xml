@@ -25,4 +25,8 @@
     <color name="gold_title">#3F51B5</color>
     <color name="node_bg">#f2f3f5</color>
     <color name="topic_text">#afafaf</color>
+
+    <color name="button_color">#FFF5A0</color>
+    <color name="label_grey1">#666666</color>
+
 </resources>

@@ -13,7 +13,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.codeest.geeknews.widget.CircleImageView
+        <com.blockchain.ipfs.widget.CircleImageView
             android:id="@+id/iv_node_face"
             android:layout_width="@dimen/vtex_node_image_size"
             android:layout_height="@dimen/vtex_node_image_size"

@@ -5,6 +5,10 @@
     android:orientation="vertical"
     >
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/view_toolbar" />
+
     <EditText android:layout_height="100dp"
         android:layout_width="match_parent"
         android:id="@+id/et_topic"
@@ -22,5 +26,14 @@
         android:layout_height="100dp"
         android:id="@+id/btn_pub"
         android:text="@string/btn_pub"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_pub_node_result"
+        android:text="结果"
+        android:layout_gravity="center"
+        android:gravity="center"
         />
 </LinearLayout>

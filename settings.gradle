@@ -1,1 +1,1 @@
-include ':app', ':ipfs-android-api', ':ipfs-android-api'
+include ':app', ':ipfs-android-api'

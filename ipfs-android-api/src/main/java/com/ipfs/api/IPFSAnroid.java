@@ -6,12 +6,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ipfs.api.converter.StringConverterFactory;
 import com.ipfs.api.entity.FileGet;
+import com.ipfs.api.entity.NodeCat;
 import com.ipfs.api.entity.Version;
 import com.ipfs.api.service.CommandService;
+import com.ipfs.api.service.StatsService;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Headers;
@@ -59,15 +62,15 @@ public class IPFSAnroid {
                 .addConverterFactory(GsonConverterFactory.create(gson)).build();
     }
 
-    public IPFSAnroid(String baseUrl, String stringConverter) {
-        retrofit = new Retrofit.Builder().baseUrl(this.baseUrl + "/api/v0/")
-                .client(okHttpClient)
-                .addConverterFactory(StringConverterFactory.create()).build();
-    }
-
-//    public IPFSAnroid(String gateway, String prefix) {
-//        retrofit = new Retrofit.Builder().baseUrl(gateway + "/api/v0/").addConverterFactory(GsonConverterFactory.create(gson)).build();
+//    public IPFSAnroid(String baseUrl, String stringConverter) {
+//        retrofit = new Retrofit.Builder().baseUrl(this.baseUrl + "/api/v0/")
+//                .client(okHttpClient)
+//                .addConverterFactory(StringConverterFactory.create()).build();
 //    }
+
+    public IPFSAnroid(String gateway, String prefix) {
+        retrofit = new Retrofit.Builder().baseUrl(gateway + "/api/v0/").addConverterFactory(GsonConverterFactory.create(gson)).build();
+    }
 
     public void version(retrofit2.Callback<Version> callback) {
         CommandService commandService = retrofit.create(CommandService.class);
@@ -80,6 +83,14 @@ public class IPFSAnroid {
         CommandService commandService = retrofit.create(CommandService.class);
         Call<FileGet> get = commandService.get(hash);
         get.enqueue(callback);
+    }
+
+
+    public void catNode(retrofit2.Callback<List<NodeCat>> callback, String hash) {
+        //IPFS 获取文件有问题，不能用http://127.0.0.1:5001/api/v0/get?hash=sxx 这种方式来获取文件
+        CommandService commandService = retrofit.create(CommandService.class);
+        Call<List<NodeCat>> node = commandService.catNode(hash);
+        node.enqueue(callback);
     }
 
 
@@ -133,5 +144,11 @@ public class IPFSAnroid {
     public NameService name() {
         return new NameService(retrofit);
     }
+
+
+    public StatsService stats() {
+        return new StatsService(retrofit);
+    }
+
 
 }

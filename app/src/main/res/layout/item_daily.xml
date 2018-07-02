@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <com.codeest.geeknews.widget.SquareImageView
+            <com.blockchain.ipfs.widget.SquareImageView
                 android:id="@+id/iv_daily_item_image"
                 android:transitionName="shareView"
                 android:src="@mipmap/ic_launcher"

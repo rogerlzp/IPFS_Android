@@ -4,6 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/view_toolbar" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_image_list"
         android:layout_width="match_parent"

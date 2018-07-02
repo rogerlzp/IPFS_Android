@@ -4,10 +4,14 @@ import com.ipfs.api.entity.FileAdd;
 import com.ipfs.api.entity.FileGet;
 import com.ipfs.api.entity.Id;
 import com.ipfs.api.entity.NameEntity;
+import com.ipfs.api.entity.NodeCat;
 import com.ipfs.api.entity.Pub;
+import com.ipfs.api.entity.StatsBwEntity;
 import com.ipfs.api.entity.Sub;
 import com.ipfs.api.entity.SwarmEntity;
 import com.ipfs.api.entity.Version;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -37,6 +41,15 @@ public interface CommandService {
     @GET("get")
     Call<FileGet> get(@Query("hash") String hash);
 
+    @GET("cat")
+    Call<List<NodeCat>> catNode(@Query("arg") String hash);
+
+
+
+    interface Stats {
+        @GET("stats/bw")
+        Call<StatsBwEntity> bw();
+    }
 
     interface Pubsub {
         // http://127.0.0.1:5001/api/v0/pubsub/pub?arg=RussiaCup3&arg=data

@@ -1,114 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swipe_refresh"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_checkIpfs"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/check_ipfs" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_start_ipfs"
+            <Button
+                android:id="@+id/btn_checkIpfs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/check_ipfs"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_start_ipfs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/start_ipfs" />
+
+            <Button
+                android:id="@+id/btn_check_Ipfs_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/check_Ipfs_version" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_ipfs_stats"
+                android:text="stats"
+                />
+
+            <Button
+                android:id="@+id/btn_checkID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_checkIpfsID" />
+
+            <Button
+                android:id="@+id/btn_choose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_choose" />
+
+            <TextView
+                android:id="@+id/tv_filename"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tv_filename" />
+
+            <EditText
+                android:id="@+id/et_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/et_desc" />
+
+            <Button
+                android:id="@+id/btn_upload"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_upload" />
+
+            <Button
+                android:id="@+id/btn_check_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_check_image" />
+
+            <Button
+                android:id="@+id/btn_pub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_pub" />
+
+            <Button
+                android:id="@+id/btn_sub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_sub" />
+
+            <Button
+                android:id="@+id/btn_swarm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_swarm" />
+
+            <Button
+                android:id="@+id/btn_pub_node"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_ipfs_pub_node" />
+
+            <Button
+                android:id="@+id/btn_ipfs_channel_node"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ipfs_channel_node" />
+
+
+            <TextView
+                android:id="@+id/tv_ipfs_status"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:maxLines="100"
+                android:scrollbars="vertical"
+                android:text="@string/status_ipfs" />
+
+        </LinearLayout>
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/start_ipfs" />
+            android:layout_height="match_parent"
+            android:background="@color/colorBackground"
+            android:visibility="gone">
 
-
-        <Button
-            android:id="@+id/btn_checkIpfsAPI"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_checkIpfsAPI" />
-
-        <Button
-            android:id="@+id/btn_checkID"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_checkIpfsID" />
-
-        <Button
-            android:id="@+id/btn_choose"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_choose" />
-
-        <TextView
-            android:id="@+id/tv_filename"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/tv_filename" />
-
-        <EditText
-            android:id="@+id/et_desc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/et_desc" />
-
-        <Button
-            android:id="@+id/btn_upload"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_upload" />
-
-        <Button
-            android:id="@+id/btn_check_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_check_image" />
-
-        <Button
-            android:id="@+id/btn_pub"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_pub" />
-
-        <Button
-            android:id="@+id/btn_sub"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_sub" />
-
-        <Button
-            android:id="@+id/btn_swarm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_swarm" />
-
-        <Button
-            android:id="@+id/btn_pub_node"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_ipfs_pub_node" />
-
-
-        <TextView
-            android:id="@+id/tv_ipfs_status"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:maxLines="100"
-            android:scrollbars="vertical"
-            android:text="@string/status_ipfs" />
-
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/view_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        </FrameLayout>
     </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorBackground"
-        android:visibility="gone">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/view_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-    </FrameLayout>
-</LinearLayout>
+</ScrollView>

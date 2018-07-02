@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.codeest.geeknews">
+    package="com.blockchain.ipfs">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -8,10 +8,9 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_LOGS" />
 
     <application
-        android:name="com.codeest.geeknews.app.App"
+        android:name="com.blockchain.ipfs.app.App"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -31,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.codeest.geeknews.ui.main.activity.MainActivity"
+            android:name="com.blockchain.ipfs.ui.main.activity.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/MainTheme"></activity>
@@ -74,10 +73,22 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
+
+        <activity
+            android:name=".ui.ipfs.activity.ChannelListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.ipfs.activity.PubNodeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.ipfs.activity.ChannelNodeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
 
         <service android:name=".ui.ipfs.activity.IpfsSubService"></service>
         <service android:name=".ui.ipfs.activity.IpfsSubCommandService" />
@@ -123,6 +134,13 @@
 
         <service android:name=".ipfs.IPFSDaemonService"></service>
 
+        <activity android:name=".ui.wallet.activity.EthWalletActivity"></activity>
+        <activity android:name=".ui.wallet.activity.ImportKeystoreActivity"></activity>
+        <activity android:name=".ui.wallet.activity.GenerateWalletActivity"></activity>
+        <activity android:name=".ui.wallet.activity.ImportPrivateKeyActivity"></activity>
+        <activity android:name=".ui.wallet.activity.SampleContractActivity"></activity>
+        <activity android:name=".ui.wallet.activity.SendActivity"></activity>
+        <activity android:name=".ui.wallet.activity.SwitchWalletActivity"></activity>
 
     </application>
 

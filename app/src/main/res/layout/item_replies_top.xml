@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical">
-        <com.codeest.geeknews.widget.SquareImageView
+        <com.blockchain.ipfs.widget.SquareImageView
             android:id="@+id/iv_replies_top_face"
             android:layout_width="@dimen/vtex_author_image_size"
             android:layout_height="@dimen/vtex_author_image_size"

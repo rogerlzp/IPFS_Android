@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.codeest.geeknews.widget.TouchSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.blockchain.ipfs.widget.TouchSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -13,4 +13,4 @@
             android:layout_height="match_parent">
         </android.support.v7.widget.RecyclerView>
     </FrameLayout>
-</com.codeest.geeknews.widget.TouchSwipeRefreshLayout>
+</com.blockchain.ipfs.widget.TouchSwipeRefreshLayout>

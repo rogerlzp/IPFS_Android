@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GeekNews</string>
+    <string name="app_name">IPFS应用</string>
     <string name="app_intro">A pure reading App for you</string>
 
     //main drawer
@@ -9,6 +9,7 @@
     <string name="gold">稀土掘金</string>
     <string name="vtex">V2EX</string>
     <string name="ipfs">IPFS</string>
+    <string name="wallet">钱包</string>
     <string name="drawer_about">关于</string>
     <string name="drawer_collection">收藏</string>
     <string name="drawer_setting">设置</string>
@@ -49,6 +50,7 @@
     <string name="check_ipfs">检查IPFS</string>
     <string name="start_ipfs"> 启动IPFS Daemon </string>
     <string name="status_ipfs"> IPFS 状态 </string>
+    <string name="check_Ipfs_version"> 检查 IPFS 版本 </string>
     <string name="btn_checkIpfsAPI"> 检查 IPFS API使用 </string>
     <string name="btn_checkIpfsID"> 命令行检查 IPFS ID </string>
     <string name="btn_upload">上传文件</string>
@@ -68,7 +70,17 @@
 
     <string name="btn_ipfs_pub_data">发布节点数据</string>
     <string name="btn_ipfs_pub_node">发布个人节点数据到网络</string>
+    <string name="ipfs_channel_node">检查从节点得到的数据</string>
     <string name="btn_ipfs_pub_name">发布Node</string>
+
+    <string name="btn_wallet">钱包功能1</string>
+    <string name="generateWallet">创建轻钱包</string>
+    <string name="conn_ropsten">测试连接到ROPSTEN INFURA网络</string>
+    <string name="password_hint">钱包密码</string>
+    <string name="receiveraddress">接受者钱包地址</string>
+
+    <string name="send_coin">发送钱币</string>
+    <string name="contract_result">合同结果</string>
 
 
 </resources>

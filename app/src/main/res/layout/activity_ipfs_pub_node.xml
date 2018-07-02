@@ -4,11 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/view_toolbar" />
 
     <Button
         android:id="@+id/btn_pub_data"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:background="@drawable/button_radius"
         android:text="@string/btn_ipfs_pub_data" />
 
 
@@ -16,13 +20,18 @@
         android:id="@+id/btn_pub_name"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:background="@drawable/button_radius"
+        android:enabled="false"
         android:text="@string/btn_ipfs_pub_name" />
 
     <Button
         android:id="@+id/btn_pub_node"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:background="@drawable/button_radius"
+        android:enabled="false"
         android:text="@string/btn_ipfs_pub_node" />
+
 
 
 </LinearLayout>

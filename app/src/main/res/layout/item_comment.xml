@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.codeest.geeknews.widget.CircleImageView
+    <com.blockchain.ipfs.widget.CircleImageView
         android:id="@+id/civ_comment_face"
         android:layout_marginEnd="10dp"
         android:layout_width="@dimen/comment_face_size"
