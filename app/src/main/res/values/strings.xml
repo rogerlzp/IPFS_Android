@@ -60,14 +60,16 @@
     <string name="btn_check_image">检查上传内容</string>
 
     <string name="topic">Pubsub主题</string>
-    <string name="pubsub_data">Pubsub 消息内容</string>
+    <string name="pubsub_data">Pubsub 消息内容, 默认是 PUBLISH_NODE，用来监听节点；如果是特定TOPIC，需改Pubsub的主题即可</string>
     <string name="btn_pub">发布Topic</string>
     <string name="btn_sub">监听Topic</string>
-    <string name="sub_publish_node">监听节点</string>
+    <string name="sub_publish_node">PUBLISH_NODE</string>
 
 
     <string name="ipfs_address">ipfs 地址</string>
     <string name="btn_swarm">手动添加节点</string>
+    <string name="ipfs_create_img">生成本节点地址二维码</string>
+    <string name="ipfs_add_node">扫一扫，添加节点</string>
 
     <string name="btn_ipfs_pub_data">发布节点数据</string>
     <string name="btn_ipfs_pub_node">发布个人节点数据到网络</string>

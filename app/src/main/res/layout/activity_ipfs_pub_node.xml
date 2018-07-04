@@ -32,6 +32,12 @@
         android:enabled="false"
         android:text="@string/btn_ipfs_pub_node" />
 
+    <ProgressBar
+        android:id="@+id/pb_update"
+        style="@android:style/Widget.ProgressBar.Inverse"
+        android:layout_width="wrap_content"
+        android:visibility="invisible"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

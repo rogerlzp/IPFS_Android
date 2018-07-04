@@ -8,6 +8,17 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false"></uses-feature>
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false"></uses-feature>
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
 
     <application
         android:name="com.blockchain.ipfs.app.App"
@@ -96,7 +107,12 @@
         <activity
             android:name=".ui.ipfs.activity.SwarmActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.mylhyl.zxing.scanner.client.android.SCAN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         //Gank
         <activity

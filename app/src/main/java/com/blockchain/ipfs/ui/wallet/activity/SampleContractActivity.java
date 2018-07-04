@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +75,11 @@ public class SampleContractActivity extends SimpleActivity {
     EditText etSet;
     @BindView(R.id.btn_send)
     Button btn_send;
+
+
+    @BindView(R.id.pbar_small)
+    ProgressBar pbar_small;
+
     private SampleContract sampleContract;
     private TutorialToken tutorialToken;
     private MetaCoin metaCoinContract;
@@ -139,6 +145,8 @@ public class SampleContractActivity extends SimpleActivity {
     }
 
     public void transferTTCoin() {
+
+        pbar_small.setVisibility(View.VISIBLE);
         Observable.create(new ObservableOnSubscribe<Object>() {
 
             @Override
@@ -165,11 +173,13 @@ public class SampleContractActivity extends SimpleActivity {
 
                             @Override
                             public void onError(Throwable e) {
+                                pbar_small.setVisibility(View.INVISIBLE);
                                 tv_contract_result.setText(e.getMessage());
                             }
 
                             @Override
                             public void onComplete() {
+                                pbar_small.setVisibility(View.INVISIBLE);
                                 tv_contract_result.setText("发送成功");
                                 if (fromRoute.equals(Constants.FROM_CHANANEL_LIST)) {
                                     Intent intent = new Intent(SampleContractActivity.this, ChannelListActivity.class);

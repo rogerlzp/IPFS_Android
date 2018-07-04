@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ipfs.api.converter.StringConverterFactory;
 import com.ipfs.api.entity.FileGet;
+import com.ipfs.api.entity.Id;
 import com.ipfs.api.entity.NodeCat;
 import com.ipfs.api.entity.Version;
 import com.ipfs.api.service.CommandService;
@@ -76,6 +77,12 @@ public class IPFSAnroid {
         CommandService commandService = retrofit.create(CommandService.class);
         Call<Version> version = commandService.version();
         version.enqueue(callback);
+    }
+
+    public void id(retrofit2.Callback<Id> callback) {
+        CommandService commandService = retrofit.create(CommandService.class);
+        Call<Id> idCall = commandService.id();
+        idCall.enqueue(callback);
     }
 
     public void get(retrofit2.Callback<FileGet> callback, String hash) {

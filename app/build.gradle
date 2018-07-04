@@ -47,16 +47,16 @@ android {
 //        exclude "lib/x86_64/librealm-jni.so"
 //    }
 //
-    splits {
-        abi {
-            enable true
-            reset()
-            //https://stackoverflow.com/questions/49518003/not-able-to-update-android-studio-3-1-conflicting-configuration-armeabi-v7a
-            // just use armeabi for now, remove      'armeabi-v7a', 'arm64-v8a'
-            include 'armeabi', 'armeabi-v7a', 'arm64-v8a'
-//            universalApk true
-        }
-    }
+//    splits {
+//        abi {
+//            enable true
+//            reset()
+//            //https://stackoverflow.com/questions/49518003/not-able-to-update-android-studio-3-1-conflicting-configuration-armeabi-v7a
+//            // just use armeabi for now, remove      'armeabi-v7a', 'arm64-v8a'
+//            include 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+////            universalApk true
+//        }
+//    }
 //    buildToolsVersion '26.0.2'
 
     // https://stackoverflow.com/questions/45862140/invokedynamic-requires-min-sdk-version-26
@@ -147,7 +147,14 @@ dependencies {
 
 
     // RxBus
-    compile 'org.greenrobot:eventbus:3.1.1'
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
+
+    // 集成zxing
+    implementation 'cn.yipianfengye.android:zxing-library:2.2'
+
+
+
 
 
 }

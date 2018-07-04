@@ -52,6 +52,7 @@ public class App extends Application {
     public static int DIMEN_DPI = -1;
 
     public DaoSession mDaoSession;
+    public boolean isIPFSDaemonRunning = false;
 
     public static synchronized App getInstance() {
         return instance;

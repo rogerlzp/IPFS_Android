@@ -64,4 +64,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/contract_result" />
+
+    <ProgressBar
+        android:id="@+id/pbar_small"
+        style="@android:style/Widget.ProgressBar.Inverse"
+        android:layout_width="wrap_content"
+        android:visibility="invisible"
+        android:layout_height="wrap_content" />
+
+
 </LinearLayout>

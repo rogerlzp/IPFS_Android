@@ -154,6 +154,10 @@ public class Constants {
     public static final int REQUEST_PAY4READ = 1;  //请求代码
     public static final int RESULT_PAYED = 1;  //请求代码
 
+    public static final String DAEMON_IS_READY = "Daemon is ready";  //请求代码
+    public static final String DAEMON_IS_CLOSED = "Daemon is closed";  //请求代码
+
+
     // 跳转
     public static final String ROUTE_FROM = "route_from";  //请求代码
     public static final String FROM_CHANANEL_LIST = "from_chananel_list";  //请求代码
