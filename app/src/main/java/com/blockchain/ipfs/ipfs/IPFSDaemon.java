@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Build;
 import android.provider.Contacts;
 
+import com.blockchain.ipfs.app.App;
+import com.blockchain.ipfs.app.Constants;
 import com.blockchain.ipfs.component.RxBus;
 import com.blockchain.ipfs.ui.ipfs.event.DaemonEvent;
 
@@ -33,8 +35,8 @@ public class IPFSDaemon {
      *
      * @return
      */
-    public IPFSDaemon(Context context) {
-        mContext = context;
+    public IPFSDaemon() {
+        mContext = App.getInstance().getApplicationContext();
     }
 
     private File getBinaryFile() {
@@ -128,7 +130,7 @@ public class IPFSDaemon {
                 if (line.equals("Daemon is ready")) {
                     //启动成功，返回
 
-                    EventBus.getDefault().post(new DaemonEvent("Daemon is ready"));
+                    EventBus.getDefault().post(new DaemonEvent(Constants.DAEMON_IS_READY));
 
                 }
             }

@@ -9,6 +9,7 @@ import com.ipfs.api.entity.FileGet;
 import com.ipfs.api.entity.Id;
 import com.ipfs.api.entity.NodeCat;
 import com.ipfs.api.entity.Version;
+import com.ipfs.api.service.BootStrapService;
 import com.ipfs.api.service.CommandService;
 import com.ipfs.api.service.StatsService;
 
@@ -24,6 +25,7 @@ import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -140,6 +142,14 @@ public class IPFSAnroid {
         }
     }
 
+    public void catFile(retrofit2.Callback<ResponseBody> callback, String hash) {
+        //IPFS 获取文件有问题，不能用http://127.0.0.1:5001/api/v0/get?hash=sxx 这种方式来获取文件
+        CommandService commandService = retrofit.create(CommandService.class);
+        Call<ResponseBody> node = commandService.catFile(hash);
+        node.enqueue(callback);
+    }
+
+
     public Pubsub pubsub() {
         return new Pubsub(retrofit);
     }
@@ -157,5 +167,8 @@ public class IPFSAnroid {
         return new StatsService(retrofit);
     }
 
+    public BootStrapService bootstrap() {
+        return new BootStrapService(retrofit);
+    }
 
 }

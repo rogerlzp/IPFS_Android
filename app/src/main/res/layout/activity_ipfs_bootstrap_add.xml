@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/view_toolbar" />
+
+    <Button
+        android:id="@+id/btn_save_by_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ipfs_add_node" />
+
+
+    <EditText
+        android:id="@+id/et_address"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:hint="@string/ipfs_address" />
+
+    <Button
+        android:id="@+id/btn_bootstrap_add"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="@string/bootstrap_add" />
+
+
+</LinearLayout>

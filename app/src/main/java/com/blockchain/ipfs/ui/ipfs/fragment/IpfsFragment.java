@@ -13,11 +13,12 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,12 +26,14 @@ import com.blockchain.ipfs.app.App;
 import com.blockchain.ipfs.app.Constants;
 import com.blockchain.ipfs.base.RootFragment;
 import com.blockchain.ipfs.base.contract.ipfs.IpfsContract;
-import com.blockchain.ipfs.component.RxBus;
 import com.blockchain.ipfs.ipfs.IPFSDaemon;
 import com.blockchain.ipfs.ipfs.IPFSDaemonService;
 import com.blockchain.ipfs.model.bean.ImageBean;
 import com.blockchain.ipfs.model.bean.WXItemBean;
 import com.blockchain.ipfs.ui.ipfs.activity.ChannelListActivity;
+import com.blockchain.ipfs.ui.ipfs.activity.GetFileActivity;
+import com.blockchain.ipfs.ui.ipfs.activity.IpfsBootstrapAddActivity;
+import com.blockchain.ipfs.ui.ipfs.activity.IpfsSwarmPeersActivity;
 import com.blockchain.ipfs.ui.ipfs.activity.PubActivity;
 import com.blockchain.ipfs.ui.ipfs.activity.PubNodeActivity;
 import com.blockchain.ipfs.ui.ipfs.activity.SubActivity;
@@ -38,38 +41,8 @@ import com.blockchain.ipfs.ui.ipfs.activity.SwarmActivity;
 import com.blockchain.ipfs.ui.ipfs.event.DaemonEvent;
 import com.blockchain.ipfs.util.PermissionUtil;
 import com.blockchain.ipfs.R;
-import com.blockchain.ipfs.app.App;
-import com.blockchain.ipfs.app.Constants;
-import com.blockchain.ipfs.base.RootFragment;
-import com.blockchain.ipfs.base.contract.ipfs.IpfsContract;
-import com.blockchain.ipfs.ipfs.IPFSDaemon;
-import com.blockchain.ipfs.ipfs.IPFSDaemonService;
-import com.blockchain.ipfs.model.bean.DaoMaster;
-import com.blockchain.ipfs.model.bean.ImageBean;
-import com.blockchain.ipfs.model.bean.WXItemBean;
 import com.blockchain.ipfs.presenter.ipfs.IpfsPresenter;
-import com.blockchain.ipfs.ui.ipfs.activity.ChannelListActivity;
 import com.blockchain.ipfs.ui.ipfs.activity.IpfsImageListActivity;
-import com.blockchain.ipfs.ui.ipfs.activity.PubActivity;
-import com.blockchain.ipfs.ui.ipfs.activity.PubNodeActivity;
-import com.blockchain.ipfs.ui.ipfs.activity.SubActivity;
-import com.blockchain.ipfs.ui.ipfs.activity.SwarmActivity;
-import com.blockchain.ipfs.ui.main.activity.MainActivity;
-import com.blockchain.ipfs.util.PermissionUtil;
-import com.blockchain.ipfs.app.App;
-import com.blockchain.ipfs.app.Constants;
-import com.blockchain.ipfs.base.RootFragment;
-import com.blockchain.ipfs.base.contract.ipfs.IpfsContract;
-import com.blockchain.ipfs.ipfs.IPFSDaemon;
-import com.blockchain.ipfs.ipfs.IPFSDaemonService;
-import com.blockchain.ipfs.model.bean.ImageBean;
-import com.blockchain.ipfs.model.bean.WXItemBean;
-import com.blockchain.ipfs.ui.ipfs.activity.ChannelListActivity;
-import com.blockchain.ipfs.ui.ipfs.activity.PubActivity;
-import com.blockchain.ipfs.ui.ipfs.activity.PubNodeActivity;
-import com.blockchain.ipfs.ui.ipfs.activity.SubActivity;
-import com.blockchain.ipfs.ui.ipfs.activity.SwarmActivity;
-import com.blockchain.ipfs.util.PermissionUtil;
 //import com.hwangjr.rxbus.RxBus;
 import com.blockchain.ipfs.util.ToastUtil;
 import com.ipfs.api.IPFSAnroid;
@@ -83,20 +56,13 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 //import io.realm.RealmObjectSchema;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -117,7 +83,7 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
     @BindView(R.id.btn_start_ipfs)
     Button btn_start_ipfs;
     @BindView(R.id.tv_ipfs_status)
-    TextView tv_ipfs_status;
+    EditText tv_ipfs_status;
 
     @BindView(R.id.btn_check_Ipfs_version)
     Button btn_check_Ipfs_version;
@@ -128,9 +94,18 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
     @BindView(R.id.btn_upload)
     Button btn_upload;
 
+
+    @BindView(R.id.btn_swarm_peers)
+    Button btn_swarm_peers;
+
+    @BindView(R.id.btn_file_get)
+    Button btn_file_get;
+
     @BindView(R.id.btn_ipfs_channel_node)
     Button btn_ipfs_channel_node;
 
+    @BindView(R.id.indeterminate_progress_small_library)
+    ProgressBar indeterminateProgressSmall;
 
     @BindView(R.id.btn_choose)
     Button btn_choose;
@@ -157,22 +132,27 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
     Button btn_pub_node;
 
 
+    @BindView(R.id.btn_bootstrap_add)
+    Button btn_bootstrap_add;
+
+
     @BindView(R.id.et_desc)
     EditText et_desc;
 
-    boolean isIPFSDaemonRunning = false;
+    @BindView(R.id.et_price)
+    EditText et_price;
 
     String filePath = "";
-
     Timer timer;
+
 
     private BroadcastReceiver ipfsDaemonReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction() == Constants.IPFS_ACTION_START) {
-                isIPFSDaemonRunning = true;
+                //  isIPFSDaemonRunning = true;
             } else if (intent.getAction() == Constants.IPFS_ACTION_STOP) {
-                isIPFSDaemonRunning = false;
+                //  isIPFSDaemonRunning = false;
             }
         }
     };
@@ -192,7 +172,6 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constants.IPFS_ACTION_START);
         filter.addAction(Constants.IPFS_ACTION_STOP);
-//        registerReceiver(ipfsDaemonReceiver, filter);
     }
 
     @Override
@@ -214,13 +193,34 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDaemonEvent(DaemonEvent event) {
         ToastUtil.show(event.message);
-        checkIpfsVersion();
-        btn_upload.setEnabled(true);
-        btn_checkID.setEnabled(true);
-        btn_pub.setEnabled(true);
-        btn_sub.setEnabled(true);
-        btn_swarm.setEnabled(true);
-        btn_pub_node.setEnabled(true);
+        if (event.message.equals(Constants.DAEMON_IS_READY)) {
+            checkIpfsVersion();
+            btn_upload.setEnabled(true);
+            btn_checkID.setEnabled(true);
+            btn_pub.setEnabled(true);
+            btn_sub.setEnabled(true);
+            btn_swarm_peers.setEnabled(true);
+            btn_swarm.setEnabled(true);
+            btn_bootstrap_add.setEnabled(true);
+            btn_pub_node.setEnabled(true);
+            btn_file_get.setEnabled(true);
+            btn_ipfs_channel_node.setEnabled(true);
+            indeterminateProgressSmall.setVisibility(View.INVISIBLE);
+            App.getInstance().isIPFSDaemonRunning = !App.getInstance().isIPFSDaemonRunning;
+        } else if (event.message.equals(Constants.DAEMON_IS_CLOSED)) {
+            btn_upload.setEnabled(false);
+            btn_checkID.setEnabled(false);
+            btn_pub.setEnabled(false);
+            btn_sub.setEnabled(false);
+            btn_swarm.setEnabled(false);
+            btn_bootstrap_add.setEnabled(false);
+            btn_swarm_peers.setEnabled(false);
+            btn_file_get.setEnabled(false);
+            btn_pub_node.setEnabled(false);
+            btn_ipfs_channel_node.setEnabled(false);
+            indeterminateProgressSmall.setVisibility(View.INVISIBLE);
+            App.getInstance().isIPFSDaemonRunning = !App.getInstance().isIPFSDaemonRunning;
+        }
 
     }
 
@@ -254,25 +254,33 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
 
     @OnClick(R.id.btn_checkIpfs)
     public void checkIpfs() {
-        IPFSDaemon ipfsDaemon = new IPFSDaemon(this.getContext());
+        IPFSDaemon ipfsDaemon = new IPFSDaemon();
         String result = ipfsDaemon.initIpfs();
         Toast.makeText(this.getContext(), result, LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.btn_start_ipfs)
     public void startStopIpfsDaemon() {
-        IPFSDaemon ipfsDaemon = new IPFSDaemon(this.getContext());
+        IPFSDaemon ipfsDaemon = new IPFSDaemon();
+        indeterminateProgressSmall.setVisibility(View.VISIBLE);
         if (!ipfsDaemon.isIpfsInitalized()) {
             ipfsDaemon.initIpfs();
         }
-        IPFSDaemonService.startStopIPFSDaemon(this.getContext(), isIPFSDaemonRunning ? Constants.IPFS_ACTION_STOP : Constants.IPFS_ACTION_START);
-        isIPFSDaemonRunning = !isIPFSDaemonRunning;
+        Intent startServiceIntent = new Intent(this.mContext, IPFSDaemonService.class);
+        startServiceIntent.setAction(App.getInstance().isIPFSDaemonRunning
+                ? Constants.IPFS_ACTION_STOP : Constants.IPFS_ACTION_START);
+
+        this.mContext.startService(startServiceIntent);
+
+//        IPFSDaemonService.startStopIPFSDaemon(this.getContext(), App.getInstance().isIPFSDaemonRunning
+//                ? Constants.IPFS_ACTION_STOP : Constants.IPFS_ACTION_START);
+
     }
 
 
     @OnClick(R.id.btn_checkID)
     public void checkIPFSID() {
-        IPFSDaemon ipfsDaemon = new IPFSDaemon(mContext);
+        IPFSDaemon ipfsDaemon = new IPFSDaemon();
         String IdInfo = ipfsDaemon.runCmd(Constants.IPFS_CMD_ID); // 启动脚本
         tv_ipfs_status.setText(IdInfo);
     }
@@ -326,6 +334,11 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
     @OnClick(R.id.btn_upload)
     public void uploadFile() {
 
+        if (TextUtils.isEmpty(filePath)) {
+            ToastUtil.show("请先选择文件并");
+            return;
+        }
+
         IPFSAnroid ipfsAnroid = new IPFSAnroid();
 
         File testFile = new File(filePath);
@@ -339,7 +352,12 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
                 imageBean.setDesc(et_desc.getText().toString().trim());
                 imageBean.setHash(response.body().getHash());
                 imageBean.setName(response.body().getName());
+                if (!TextUtils.isEmpty(et_price.getText().toString().trim())) {
+                    imageBean.setPrice(Double.parseDouble(et_price.getText().toString().trim()));
+                }
                 App.getInstance().mDaoSession.getImageBeanDao().insert(imageBean);
+
+
             }
 
             @Override
@@ -367,6 +385,27 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
     @OnClick(R.id.btn_check_image)
     public void checkImageFile() {
         Intent intent = new Intent(this.getContext(), IpfsImageListActivity.class);
+        startActivity(intent);
+    }
+
+
+    @OnClick(R.id.btn_swarm_peers)
+    public void swarmPeers() {
+        Intent intent = new Intent(this.getContext(), IpfsSwarmPeersActivity.class);
+        startActivity(intent);
+    }
+
+
+
+    @OnClick(R.id.btn_file_get)
+    public void getFile() {
+        Intent intent = new Intent(this.getContext(), GetFileActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.btn_bootstrap_add)
+    public void bootStrapAdd() {
+        Intent intent = new Intent(this.getContext(), IpfsBootstrapAddActivity.class);
         startActivity(intent);
     }
 
@@ -408,8 +447,6 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
     public void saveDatabaseFile() {
         Intent intent = new Intent(this.getContext(), IpfsImageListActivity.class);
         startActivity(intent);
-
-
     }
 
     @Override
@@ -419,6 +456,7 @@ public class IpfsFragment extends RootFragment<IpfsPresenter> implements IpfsCon
             if ("file".equalsIgnoreCase(uri.getScheme())) {//使用第三方应用打开
                 filePath = uri.getPath();
                 tv_filename.setText(filePath.substring(filePath.lastIndexOf("/"), filePath.length()));
+                et_price.setText("1");
                 return;
             }
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {//4.4以后

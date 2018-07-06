@@ -91,7 +91,7 @@ public class PubActivity extends SimpleActivity {
                                         ToastUtil.show("pub failed");
                                         KLog.e(t.getMessage());
                                     }
-                                }, et_topic.getText().toString().trim(), ipfsNodeHash
+                                }, et_topic.getText().toString().trim(), et_message.getText().toString().trim()
         );
 
     }

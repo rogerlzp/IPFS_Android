@@ -57,6 +57,7 @@
     <string name="tv_filename">文件名称</string>
 
     <string name="et_desc">添加描述</string>
+    <string name="et_price">价格：单位(TT代币)，默认0，不需要</string>
     <string name="btn_check_image">检查上传内容</string>
 
     <string name="topic">Pubsub主题</string>
@@ -68,6 +69,11 @@
 
     <string name="ipfs_address">ipfs 地址</string>
     <string name="btn_swarm">手动添加节点</string>
+    <string name="btn_change">换个地址试试</string>
+    <string name="swarm_peers"> List peers with open connections.</string>
+    <string name="bootstrap_add">手动添加节点到bootstrap</string>
+
+
     <string name="ipfs_create_img">生成本节点地址二维码</string>
     <string name="ipfs_add_node">扫一扫，添加节点</string>
 
@@ -82,8 +88,23 @@
     <string name="password_hint">钱包密码</string>
     <string name="receiveraddress">接受者钱包地址</string>
 
+    <string name="set_wallet_address">设置主钱包地址</string>
+    <string name="change_wallet">更换主钱包地址</string>
+    <string name="no_main_wallet">没有设置钱包地址</string>
+
+    <string name="sent_from">支付者的钱包地址</string>
+
+    <string name="sent_to">接受者的钱包地址</string>
+
     <string name="send_coin">发送钱币</string>
     <string name="contract_result">合同结果</string>
+
+
+    <string name="hash_file_hint">输入hash地址来获取文件</string>
+    <string name="file_get">获取文件</string>
+
+    <string name="cancel">取消</string>
+
 
 
 </resources>

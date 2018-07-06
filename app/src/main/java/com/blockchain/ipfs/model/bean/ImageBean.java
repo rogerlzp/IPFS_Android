@@ -19,15 +19,17 @@ public class ImageBean {
     private String desc; // 文件类型
     private int status;  // 文件状态
     private String hash; // 文件的Hash地址
-    @Generated(hash = 1766531066)
+    private Double price; //价格，几个自定义的Token
+    @Generated(hash = 1147935167)
     public ImageBean(Long id, String type, String name, String desc, int status,
-            String hash) {
+            String hash, Double price) {
         this.id = id;
         this.type = type;
         this.name = name;
         this.desc = desc;
         this.status = status;
         this.hash = hash;
+        this.price = price;
     }
     @Generated(hash = 645668394)
     public ImageBean() {
@@ -35,7 +37,9 @@ public class ImageBean {
     public Long getId() {
         return this.id;
     }
-
+    public void setId(Long id) {
+        this.id = id;
+    }
     public String getType() {
         return this.type;
     }
@@ -66,9 +70,14 @@ public class ImageBean {
     public void setHash(String hash) {
         this.hash = hash;
     }
-    public void setId(Long id) {
-        this.id = id;
+    public Double getPrice() {
+        return this.price;
     }
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+
 }
 
 

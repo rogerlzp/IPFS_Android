@@ -58,9 +58,13 @@ public class ChannelListActivity extends SimpleActivity implements IpfsNodeAdapt
         selectedChannelNodeBean = ipfsChannelNodeBean;
         Intent contractIntent = new Intent(this, SampleContractActivity.class);
         Bundle b = new Bundle();
+        b.putDouble(Constants.NODE_PRICE, selectedChannelNodeBean.getTotalPrice());
+        b.putString(Constants.RECEIVER_ADDRESS, selectedChannelNodeBean.getReceiverAddress());
         b.putString(Constants.ROUTE_FROM, Constants.FROM_CHANANEL_LIST);
         contractIntent.putExtras(b);
         startActivityForResult(contractIntent, Constants.REQUEST_PAY4READ);
+
+
     }
 
 

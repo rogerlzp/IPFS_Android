@@ -1,42 +1,32 @@
 package com.blockchain.ipfs.ui.ipfs.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blockchain.ipfs.R;
 import com.blockchain.ipfs.app.Constants;
 import com.blockchain.ipfs.base.SimpleActivity;
-import com.blockchain.ipfs.ui.main.activity.MainActivity;
+import com.blockchain.ipfs.ui.ipfs.adapter.IpfsPeerAdapter;
 import com.blockchain.ipfs.util.PermissionUtil;
 import com.blockchain.ipfs.util.ToastUtil;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.Result;
-import com.google.zxing.client.result.ParsedResult;
 import com.ipfs.api.IPFSAnroid;
-import com.ipfs.api.entity.Id;
+import com.ipfs.api.entity.BootStrapEntity;
+import com.ipfs.api.entity.PeerEntity;
 import com.ipfs.api.entity.SwarmEntity;
-
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -44,106 +34,45 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by zhengpingli on 2018/6/15.
- */
+public class IpfsBootstrapAddActivity extends SimpleActivity {
+//
+//    @BindView(R.id.rv_peer_list)
+//    RecyclerView rv_peer_list;
 
-public class SwarmActivity extends SimpleActivity {
+    @BindView(R.id.btn_bootstrap_add)
+    Button btn_bootstrap_add;
 
     @BindView(R.id.et_address)
     EditText et_address;
 
-
-    @BindView(R.id.btn_swarm)
-    Button btn_swarm;
-
-    @BindView(R.id.btn_save_img)
-    Button btn_save_img;
-
     @BindView(R.id.btn_save_by_img)
     Button btn_save_by_img;
 
+    List<PeerEntity> mList;
+    IpfsPeerAdapter mAdapter;
 
-    @BindView(R.id.btn_change)
-    Button btn_change;
-
-
-    @BindView(R.id.iv_qr_img)
-    ImageView iv_qr_img;
-
-
-    @BindView(R.id.tv_ip_address)
-    TextView tv_ip_address;
-
-    int ipAddressCounter = 1;
 
     @Override
     protected int getLayout() {
-        return R.layout.activity_ipfs_swarm;
+        return R.layout.activity_ipfs_bootstrap_add;
     }
-
-    String firstIp = "";
 
     @Override
     protected void initEventAndData() {
+
         PermissionUtil.requestPermissions(this);
 
         ZXingLibrary.initDisplayOpinion(this);
 
-
     }
-
-    @OnClick(R.id.btn_save_img)
-    public void saveNodeImg() {
-        IPFSAnroid ipfsAnroid = new IPFSAnroid();
-        ipfsAnroid.id(new Callback<Id>() {
-            @Override
-            public void onResponse(Call<Id> call, Response<Id> response) {
-                if (response.body().getAddresses().size() != 0) {
-                    firstIp = response.body().getAddresses().get(0);
-
-                    Bitmap mBitmap = CodeUtils.createImage(firstIp, 400, 400, BitmapFactory.decodeResource(getResources(), R.drawable.ipfs_logo_440));
-                    iv_qr_img.setImageBitmap(mBitmap);
-                    tv_ip_address.setText(firstIp);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Id> call, Throwable t) {
-            }
-        });
-    }
-
-    @OnClick(R.id.btn_change)
-    public void btn_change() {
-        IPFSAnroid ipfsAnroid = new IPFSAnroid();
-        ipfsAnroid.id(new Callback<Id>() {
-            @Override
-            public void onResponse(Call<Id> call, Response<Id> response) {
-                if (response.body().getAddresses().size() != 0) {
-
-                    firstIp = response.body().getAddresses().get(ipAddressCounter++);
-
-                    Bitmap mBitmap = CodeUtils.createImage(firstIp, 400, 400, BitmapFactory.decodeResource(getResources(), R.drawable.ipfs_logo_440));
-                    iv_qr_img.setImageBitmap(mBitmap);
-                    tv_ip_address.setText(firstIp);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Id> call, Throwable t) {
-            }
-        });
-    }
-
 
     @OnClick(R.id.btn_save_by_img)
     public void scan() {
-        if (ContextCompat.checkSelfPermission(SwarmActivity.this,
+        if (ContextCompat.checkSelfPermission(IpfsBootstrapAddActivity.this,
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             //权限还没有授予，需要在这里写申请权限的代码
-            ActivityCompat.requestPermissions(SwarmActivity.this,
+            ActivityCompat.requestPermissions(IpfsBootstrapAddActivity.this,
                     new String[]{Manifest.permission.CAMERA}, 60);
         } else {
             Intent intent = new Intent(this, CaptureActivity.class);
@@ -172,7 +101,7 @@ public class SwarmActivity extends SimpleActivity {
 
     }
 
-    @OnClick(R.id.btn_swarm)
+    @OnClick(R.id.btn_bootstrap_add)
     public void swarm() {
         if (TextUtils.isEmpty(et_address.getText().toString().trim())) {
             ToastUtil.shortShow("et_address 不能为空");
@@ -180,20 +109,23 @@ public class SwarmActivity extends SimpleActivity {
         }
 
         IPFSAnroid ipfsAnroid = new IPFSAnroid();
-        ipfsAnroid.swarm().connect(new Callback<SwarmEntity.Connect>() {
+        ipfsAnroid.bootstrap().add(new Callback<BootStrapEntity>() {
             @Override
-            public void onResponse(Call<SwarmEntity.Connect> call, Response<SwarmEntity.Connect> response) {
+            public void onResponse(Call<BootStrapEntity> call, Response<BootStrapEntity> response) {
                 if (response.body() != null) {
                     if (!TextUtils.isEmpty(response.body().toString())) {
-                        ToastUtil.show(response.body().getStrings().get(0));
+                        if (response.body().getPeers().size() != 0) {
+                            ToastUtil.show(response.body().getPeers().get(0));
+                        }
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<SwarmEntity.Connect> call, Throwable t) {
+            public void onFailure(Call<BootStrapEntity> call, Throwable t) {
                 ToastUtil.show(t.getMessage());
             }
+
         }, et_address.getText().toString().trim());
     }
 

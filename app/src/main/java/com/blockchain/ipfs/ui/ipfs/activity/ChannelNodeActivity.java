@@ -59,12 +59,7 @@ public class ChannelNodeActivity extends SimpleActivity {
                 mAdapter = new IpfsNodeDataAdapter(mContext, mList);
                 rv_image_list.setLayoutManager(new LinearLayoutManager(mContext));
                 rv_image_list.setAdapter(mAdapter);
-//                for (NodeCat nodeCat : response.body()) {
-//                    ToastUtil.show("HASH:" + nodeCat.getHash()
-//                            + "\nname:" + nodeCat.getName()
-//                            + "\nstatus:" + nodeCat.getStatus()
-//                            + "\ndesc" + nodeCat.getDesc()
-//                    );
+
 //                }
             }
 

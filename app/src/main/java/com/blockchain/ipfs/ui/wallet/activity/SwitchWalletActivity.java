@@ -19,6 +19,8 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static com.blockchain.ipfs.util.KeyStoreUtils.gekeystoreList;
+
 public class SwitchWalletActivity extends SimpleActivity implements KeyStoreListAdapter.ChooseKeyStoreListener {
 
     public static final int FROM_ADDRESS = 232;
@@ -26,32 +28,6 @@ public class SwitchWalletActivity extends SimpleActivity implements KeyStoreList
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     KeyStoreListAdapter keyStoreListAdapter;
-
-
-    private List<KeyStoreBean> gekeystoreList() {
-
-
-        List<KeyStoreBean> keyStoreBeans = new ArrayList<>();
-
-        File[] keyStoreFiles = KeyStoreUtils.getKeyStorePathFile().listFiles();
-
-        for (File file : keyStoreFiles) {
-
-            String name = file.getName();
-            String address;
-            if (name.endsWith(".json")) {//web3j生成的keystore
-                address = name.substring(name.lastIndexOf("--") + 2, name.lastIndexOf("."));
-            } else {
-                //geth生成的keystore
-                address = name.substring(name.lastIndexOf("--") + 2, name.length() - 1);
-            }
-
-
-            keyStoreBeans.add(new KeyStoreBean(address, file.getAbsolutePath()));
-        }
-
-        return keyStoreBeans;
-    }
 
 
     @Override
@@ -62,7 +38,7 @@ public class SwitchWalletActivity extends SimpleActivity implements KeyStoreList
     @Override
     protected void initEventAndData() {
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        keyStoreListAdapter = new KeyStoreListAdapter(this, gekeystoreList());
+        keyStoreListAdapter = new KeyStoreListAdapter(this, KeyStoreUtils.gekeystoreList());
         keyStoreListAdapter.setChooseKeyStoreListener(this);
         recyclerview.setAdapter(keyStoreListAdapter);
         recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));

@@ -5,51 +5,84 @@
     android:orientation="vertical">
 
 
-    <Button
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/view_toolbar" />
+
+    <TextView
+        android:id="@+id/tv_wallet_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/wallet" />
+
+    <TextView
+        android:id="@+id/tv_wallet_value_tt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="0TT" />
+
+    <TextView
+        android:id="@+id/tv_wallet_value_eth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="0ETH" />
+
+
+    <Button
+        android:id="@+id/btn_change_wallet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/change_wallet" />
+
+
+    <Button
         android:id="@+id/btn_import_keystore"
-        android:text="importKeystore"
-        />
-
-    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="importKeystore" />
+
+    <Button
         android:id="@+id/btn_import_privatekey"
-        android:text="importPrivateKey"
-        />
-    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="importPrivateKey" />
+
+    <Button
         android:id="@+id/btn_transation"
-        android:text="transation"
-        />
-    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="transation" />
+
+    <Button
         android:id="@+id/btn_generateWallet"
-        android:text="@string/generateWallet"
-        />
-
-    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/generateWallet" />
+
+    <Button
         android:id="@+id/btn_switchWallet"
-        android:text="switchWallet"
-        />
-    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_sampleContract"
-        android:text="sampleContract"
-        />
+        android:text="switchWallet" />
 
     <Button
+        android:id="@+id/btn_sampleContract"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="sampleContract" />
+
+    <Button
+        android:id="@+id/btn_set_wallet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/set_wallet_address" />
+
+
+    <Button
         android:id="@+id/btn_conn_ropsten"
-        android:text="@string/conn_ropsten"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/conn_ropsten" />
 
     <FrameLayout
         android:layout_width="match_parent"

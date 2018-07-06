@@ -16,8 +16,11 @@ import com.blockchain.ipfs.app.Constants;
 import com.blockchain.ipfs.R;
 import com.blockchain.ipfs.app.Constants;
 import com.blockchain.ipfs.app.Constants;
+import com.blockchain.ipfs.ui.ipfs.event.DaemonEvent;
 import com.ipfs.api.IPFSAnroid;
 import com.ipfs.api.entity.StatsBwEntity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -47,8 +50,10 @@ public class IPFSDaemonService extends IntentService {
     }
 
 
+
+
     public static void startStopIPFSDaemon(Context context, String action) {
-        mContext = context;
+       mContext = context;
         Intent intent = new Intent(context, IPFSDaemonService.class);
         intent.setAction(action);
         context.startService(intent);
@@ -131,7 +136,7 @@ public class IPFSDaemonService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (Constants.IPFS_ACTION_START.equals(action)) {
-                IPFSDaemon ipfsDaemon = new IPFSDaemon(mContext);
+                IPFSDaemon ipfsDaemon = new IPFSDaemon();
                 //  ipfsDaemon.runCmd(Constants.IPFS_CMD_DAEMON); // 启动脚本
 
                 ipfsDaemon.runCmd(Constants.IPFS_CMD_DAEMON_PUBSUB); // 启动脚本，加入pubsub 特性
@@ -141,6 +146,8 @@ public class IPFSDaemonService extends IntentService {
             } else if (Constants.IPFS_ACTION_STOP.equals(action)) {
                 // 关闭进程
                 stopSelf();
+                EventBus.getDefault().post(new DaemonEvent(Constants.DAEMON_IS_CLOSED));
+
             }
         }
     }

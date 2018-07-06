@@ -68,7 +68,7 @@ android {
 
     // 配置GreenDao基本参数
     greendao {
-        schemaVersion 3 //当前数据库版本
+        schemaVersion 4 //当前数据库版本
     }
 
     // fix https://github.com/ReactiveX/RxJava/issues/4445

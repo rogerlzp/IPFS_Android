@@ -54,6 +54,16 @@ public class App extends Application {
     public DaoSession mDaoSession;
     public boolean isIPFSDaemonRunning = false;
 
+    public static String getMainWalletAddress() {
+        return mainWalletAddress;
+    }
+
+    public static void setMainWalletAddress(String _mainWalletAddress) {
+        mainWalletAddress = _mainWalletAddress;
+    }
+
+    private static String mainWalletAddress = null;
+
     public static synchronized App getInstance() {
         return instance;
     }

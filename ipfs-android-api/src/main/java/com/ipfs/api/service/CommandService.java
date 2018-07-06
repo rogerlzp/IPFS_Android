@@ -1,10 +1,12 @@
 package com.ipfs.api.service;
 
+import com.ipfs.api.entity.BootStrapEntity;
 import com.ipfs.api.entity.FileAdd;
 import com.ipfs.api.entity.FileGet;
 import com.ipfs.api.entity.Id;
 import com.ipfs.api.entity.NameEntity;
 import com.ipfs.api.entity.NodeCat;
+import com.ipfs.api.entity.PeersEntity;
 import com.ipfs.api.entity.Pub;
 import com.ipfs.api.entity.StatsBwEntity;
 import com.ipfs.api.entity.Sub;
@@ -15,6 +17,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -22,6 +25,8 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
+import retrofit2.http.Streaming;
+
 
 /**
  * Created by zhengpingli on 2018/6/13.
@@ -45,6 +50,9 @@ public interface CommandService {
     Call<List<NodeCat>> catNode(@Query("arg") String hash);
 
 
+    @Streaming
+    @GET("cat")
+    Call<ResponseBody> catFile(@Query("arg") String hash);
 
     interface Stats {
         @GET("stats/bw")
@@ -74,6 +82,9 @@ public interface CommandService {
     interface Swarm {
         @GET("swarm/connect")
         Call<SwarmEntity.Connect> connect(@Query("arg") String arg);
+
+        @GET("swarm/peers")
+        Call<PeersEntity> peers();
     }
 
     interface Name {
@@ -81,6 +92,17 @@ public interface CommandService {
         //必须用GET，而不能是POST
         @GET("name/publish")
         Call<NameEntity> publish(@Query("arg") String arg1);
+    }
+
+    interface Bootstrap {
+        @GET("bootstrap/add")
+        Call<BootStrapEntity> add(@Query("arg") String arg);
+
+        @GET("bootstrap/rm")
+        Call<BootStrapEntity> rm(@Query("arg") String arg);
+
+        @GET("bootstrap/list")
+        Call<BootStrapEntity> list();
     }
 
 }

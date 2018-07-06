@@ -256,9 +256,23 @@ public class SubActivity extends SimpleActivity implements IpfsSubService.SupCal
         // 如果含有节点信息，则添加该节点到数据库中
         IpfsChannelNodeBean ipfsChannelNodeBean = new IpfsChannelNodeBean();
         ipfsChannelNodeBean.setGetTime(new Date());
-        ipfsChannelNodeBean.setHash(new String(Base64.decode(sub.getData(), Base64.DEFAULT)));
+        String originData = new String(Base64.decode(sub.getData(), Base64.DEFAULT));
+
+        if (originData.indexOf(";") != -1) {
+            ipfsChannelNodeBean.setHash(originData.split(";")[0].split(":")[1]);
+            ipfsChannelNodeBean.setTotalPrice(Double.parseDouble(originData.split(";")[1].split(":")[1]));
+            ipfsChannelNodeBean.setReceiverAddress(originData.split(";")[2].split(":")[1]);
+
+        } else {
+            ipfsChannelNodeBean.setHash(originData);
+            ipfsChannelNodeBean.setTotalPrice(0d);
+            ipfsChannelNodeBean.setReceiverAddress("");
+        }
+
         ipfsChannelNodeBean.setTopic(topic);
         ipfsChannelNodeBean.setName(new String(Base64.decode(sub.getFrom(), Base64.DEFAULT)));
         App.getInstance().mDaoSession.getIpfsChannelNodeBeanDao().insert(ipfsChannelNodeBean);
     }
+
+
 }

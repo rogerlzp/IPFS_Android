@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/view_toolbar" />
+
+
+    <EditText
+        android:id="@+id/et_hash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/bootstrap_add" />
+
+    <Button
+        android:id="@+id/btn_get_hash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/file_get" />
+
+
+    <TextView
+        android:id="@+id/tv_file_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>

@@ -2,12 +2,18 @@ package com.blockchain.ipfs.ui.wallet.fragment;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.blockchain.ipfs.app.App;
 import com.blockchain.ipfs.base.contract.wallet.WalletContract;
 import com.blockchain.ipfs.presenter.wallet.WalletPresenter;
+import com.blockchain.ipfs.ui.ipfs.activity.ChannelListActivity;
 import com.blockchain.ipfs.ui.wallet.activity.ImportPrivateKeyActivity;
 import com.blockchain.ipfs.ui.wallet.activity.SendActivity;
 import com.blockchain.ipfs.ui.wallet.activity.SwitchWalletActivity;
@@ -35,16 +41,38 @@ import com.blockchain.ipfs.presenter.wallet.WalletPresenter;
 import com.blockchain.ipfs.ui.wallet.activity.ImportPrivateKeyActivity;
 import com.blockchain.ipfs.ui.wallet.activity.SendActivity;
 import com.blockchain.ipfs.ui.wallet.activity.SwitchWalletActivity;
+import com.blockchain.ipfs.util.TokenUtil;
+import com.blockchain.ipfs.widget.DialogUI;
 
+import org.web3j.abi.FunctionEncoder;
+import org.web3j.abi.FunctionReturnDecoder;
+import org.web3j.abi.TypeReference;
+import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.Function;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.DefaultBlockParameterNumber;
+import org.web3j.protocol.core.methods.request.Transaction;
+import org.web3j.protocol.core.methods.response.EthCall;
+import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.core.methods.response.Web3ClientVersion;
+import org.web3j.utils.Convert;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class WalletFragment extends RootFragment<WalletPresenter> implements WalletContract.View {
@@ -75,6 +103,24 @@ public class WalletFragment extends RootFragment<WalletPresenter> implements Wal
     @BindView(R.id.btn_sampleContract)
     Button btn_sampleContract;
 
+    @BindView(R.id.btn_set_wallet)
+    Button btn_set_wallet;
+
+    @BindView(R.id.tv_wallet_value_tt)
+    TextView tv_wallet_value_tt;
+
+    @BindView(R.id.tv_wallet_address)
+    TextView tv_wallet_address;
+
+    @BindView(R.id.tv_wallet_value_eth)
+    TextView tv_wallet_value_eth;
+
+    @BindView(R.id.btn_change_wallet)
+    Button btn_change_wallet;
+
+    String mailWalletAddress = "";
+    BigDecimal ethValue;
+    BigInteger ttValue;
 
     @OnClick(R.id.btn_import_keystore)
     public void importKeystore(View view) {
@@ -94,21 +140,23 @@ public class WalletFragment extends RootFragment<WalletPresenter> implements Wal
 
     @OnClick(R.id.btn_generateWallet)
     public void generateWallet(View view) {
-
         startActivity(new Intent(this.mContext, GenerateWalletActivity.class));
-
     }
 
     @OnClick(R.id.btn_switchWallet)
     public void switchWallet(View view) {
-
         startActivity(new Intent(this.mContext, SwitchWalletActivity.class));
     }
 
     @OnClick(R.id.btn_sampleContract)
     public void sampleContract(View view) {
-
         startActivity(new Intent(this.mContext, SampleContractActivity.class));
+    }
+
+
+    @OnClick(R.id.btn_set_wallet)
+    public void setMainWallet(View view) {
+        startActivityForResult(new Intent(this.mContext, SwitchWalletActivity.class), Constants.REQUEST_FROM_SET_WALLET);
     }
 
     @OnClick(R.id.btn_conn_ropsten)
@@ -150,6 +198,7 @@ public class WalletFragment extends RootFragment<WalletPresenter> implements Wal
         super.initEventAndData();
         registerReceiver();
 
+        // 检查是否设置了主钱包
 
     }
 
@@ -166,6 +215,57 @@ public class WalletFragment extends RootFragment<WalletPresenter> implements Wal
     @Override
     public void stateError() {
         super.stateError();
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.REQUEST_FROM_SET_WALLET) {
+            mailWalletAddress = data.getStringExtra("address");
+            if (!mailWalletAddress.startsWith("0x")) {
+                mailWalletAddress = "0x" + mailWalletAddress;
+            }
+            App.setMainWalletAddress(mailWalletAddress);
+            tv_wallet_address.setText(mailWalletAddress);
+            updateToken();
+        }
+    }
+
+    private void updateToken() {
+
+        Observable.create(new ObservableOnSubscribe<Object>() {
+
+            @Override
+            public void subscribe(ObservableEmitter<Object> e) throws Exception {
+                ethValue = TokenUtil.getTokenBalance(mailWalletAddress);
+                ttValue = (TokenUtil.getTokenBalance(mailWalletAddress, Constants.TT_COIN_CONTRACT_ADDRESS).divide(new BigInteger("100")));
+                e.onNext(new Object());
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        new Observer<Object>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+                            }
+
+                            @Override
+                            public void onNext(Object value) {
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                                tv_wallet_value_eth.setText("" + ethValue + "ETH");
+                                tv_wallet_value_tt.setText("" + ttValue + "TT");
+                            }
+                        }
+                );
 
     }
 

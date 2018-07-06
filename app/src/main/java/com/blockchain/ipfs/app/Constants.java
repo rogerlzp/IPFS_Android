@@ -154,6 +154,8 @@ public class Constants {
     public static final int REQUEST_PAY4READ = 1;  //请求代码
     public static final int RESULT_PAYED = 1;  //请求代码
 
+    public static final int REQUEST_FROM_SET_WALLET = 199;  //请求代码
+
     public static final String DAEMON_IS_READY = "Daemon is ready";  //请求代码
     public static final String DAEMON_IS_CLOSED = "Daemon is closed";  //请求代码
 
@@ -161,9 +163,16 @@ public class Constants {
     // 跳转
     public static final String ROUTE_FROM = "route_from";  //请求代码
     public static final String FROM_CHANANEL_LIST = "from_chananel_list";  //请求代码
+    public static final String NODE_PRICE = "node_price";  //请求代码
+    public static final String RECEIVER_ADDRESS = "receiver_address";  //接受者的钱包地址
+
+
 
 
     // ropsten test URL
     public static final String ROPSTEN_INFURA_URL = "https://ropsten.infura.io/EthM1kj1Q8GVwYZD2YKR";
+
+    // Tutorial Token Address;
+    public static final String TT_COIN_CONTRACT_ADDRESS = "0xc70ace8f3fa405a77b9237d8dc94e9c8a10bdec9";
 
 }

@@ -3,6 +3,7 @@ package com.blockchain.ipfs.util;
 import android.util.Log;
 
 import com.blockchain.ipfs.app.App;
+import com.blockchain.ipfs.model.bean.KeyStoreBean;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.web3j.crypto.CipherException;
@@ -19,6 +20,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KeyStoreUtils {
     public static final String DEFAULTKEY = "DEFAULT";
@@ -26,14 +29,15 @@ public class KeyStoreUtils {
 
     /**
      * 在内置存储生成keystore方便选择
+     *
      * @param ecKeyPair
      * @return
      */
     public static String genKeyStore2Files(ECKeyPair ecKeyPair) {
         try {
-            File file =getKeyStorePathFile();
+            File file = getKeyStorePathFile();
             String s = WalletUtils.generateWalletFile(DEFAULTKEY, ecKeyPair, file, false);
-            Log.e("gen",s);
+            Log.e("gen", s);
             return s;
 
         } catch (CipherException e) {
@@ -46,7 +50,7 @@ public class KeyStoreUtils {
 
     public static String genKeyStore2Files(String password, ECKeyPair ecKeyPair) {
         try {
-            File file =getKeyStorePathFile();
+            File file = getKeyStorePathFile();
             String s = WalletUtils.generateWalletFile(password, ecKeyPair, file, false);
         } catch (CipherException e) {
             e.printStackTrace();
@@ -58,6 +62,9 @@ public class KeyStoreUtils {
 
     public static Credentials getCredentials(String tagetAddress) throws FileNotFoundException {
 
+        if (tagetAddress.startsWith("0x")) {
+            tagetAddress = tagetAddress.substring(2); //去掉开头的0x
+        }
         File keystorePath = new File(KEYSTORE_PATH);
 
         File[] files = keystorePath.listFiles();
@@ -100,5 +107,31 @@ public class KeyStoreUtils {
             file.mkdirs();
         }
         return file;
+    }
+
+
+    public static List<KeyStoreBean> gekeystoreList() {
+
+
+        List<KeyStoreBean> keyStoreBeans = new ArrayList<>();
+
+        File[] keyStoreFiles = KeyStoreUtils.getKeyStorePathFile().listFiles();
+
+        for (File file : keyStoreFiles) {
+
+            String name = file.getName();
+            String address;
+            if (name.endsWith(".json")) {//web3j生成的keystore
+                address = name.substring(name.lastIndexOf("--") + 2, name.lastIndexOf("."));
+            } else {
+                //geth生成的keystore
+                address = name.substring(name.lastIndexOf("--") + 2, name.length() - 1);
+            }
+
+
+            keyStoreBeans.add(new KeyStoreBean(address, file.getAbsolutePath()));
+        }
+
+        return keyStoreBeans;
     }
 }

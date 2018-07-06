@@ -8,6 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blockchain.ipfs.app.App;
 import com.blockchain.ipfs.app.Constants;
 import com.blockchain.ipfs.base.SimpleActivity;
 import com.blockchain.ipfs.ui.ipfs.activity.ChannelListActivity;
@@ -53,7 +54,6 @@ public class SampleContractActivity extends SimpleActivity {
     private String contractAddress = "0xe8bb91414fae190894b02cf7ebf10b6f69b74b26";
     private String metaCoinContractAddress = "0x2dbE09d6adfeb3183c2af6fC715f07b8aEE2B973";
 
-    private String ttCoinContractAddress = "0xc70ace8f3fa405a77b9237d8dc94e9c8a10bdec9";
 
     @BindView(R.id.tv_address)
     TextView tvAddress;
@@ -71,8 +71,8 @@ public class SampleContractActivity extends SimpleActivity {
     TextView tvContent;
     @BindView(R.id.btn_get)
     Button btnGet;
-    @BindView(R.id.et_set)
-    EditText etSet;
+    @BindView(R.id.tv_set)
+    TextView tv_set;
     @BindView(R.id.btn_send)
     Button btn_send;
 
@@ -91,6 +91,8 @@ public class SampleContractActivity extends SimpleActivity {
 
     private String fromRoute = "";
 
+    private Double totalPrice;
+
     @Override
     protected int getLayout() {
         return R.layout.activity_contract;
@@ -101,8 +103,33 @@ public class SampleContractActivity extends SimpleActivity {
     protected void initEventAndData() {
         if (getIntent().getExtras() != null) {
             fromRoute = getIntent().getExtras().getString(Constants.ROUTE_FROM);
+            tv_set.setText("" + getIntent().getExtras().getDouble(Constants.NODE_PRICE));
+            totalPrice = getIntent().getExtras().getDouble(Constants.NODE_PRICE, 0) * 100;
+            sendAmount = BigInteger.valueOf(totalPrice.longValue());
+            receiverAddress = getIntent().getExtras().getString(Constants.RECEIVER_ADDRESS);
+            tvAddress.setText(App.getMainWalletAddress());
+            loadContract();
+            tv_receiveraddress.setText(receiverAddress);
         }
+    }
 
+    private void loadContract() {
+        Observable.create((ObservableOnSubscribe<TutorialToken>) emitter -> {
+            TutorialToken tutorialToken = TutorialToken.load(Constants.TT_COIN_CONTRACT_ADDRESS,
+                    Web3JService.getInstance(), KeyStoreUtils.getCredentials(App.getMainWalletAddress()),
+                    new BigInteger(gasPrice),
+                    new BigInteger(gasLimit));
+            emitter.onNext(tutorialToken);
+            emitter.onComplete();
+
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(tutorialToken -> {
+                    this.tutorialToken = tutorialToken;
+                    ToastUtil.show("合约加载完成");
+                }, throwable -> throwable.printStackTrace())
+        ;
     }
 
     @OnClick({R.id.btn_select, R.id.btn_get, R.id.btn_send, R.id.tv_receiveraddress})
@@ -129,11 +156,11 @@ public class SampleContractActivity extends SimpleActivity {
     }
 
     private void setContractValue() {
-        if (etSet.length() == 0) {
+        if (tv_set.length() == 0) {
             return;
         }
         Observable.create(e -> {
-            sampleContract.set(new BigInteger(etSet.getText().toString())).send();
+            sampleContract.set(new BigInteger(tv_set.getText().toString())).send();
             e.onNext(new Object());
             e.onComplete();
         })
@@ -145,7 +172,6 @@ public class SampleContractActivity extends SimpleActivity {
     }
 
     public void transferTTCoin() {
-
         pbar_small.setVisibility(View.VISIBLE);
         Observable.create(new ObservableOnSubscribe<Object>() {
 
@@ -195,35 +221,6 @@ public class SampleContractActivity extends SimpleActivity {
 
 
     public void sendCoin() {
-//        Observable.create(
-////===============这里是第一部分A===============
-//                new ObservableOnSubscribe<String>() {
-//                    @Override
-//                    public void subscribe(ObservableEmitter<String> e) throws Exception {
-//                        e.onNext("你好世界");
-//                        e.onComplete();
-//                    }
-//                }
-////===============这里是第一部分A-结束===============
-//        ).subscribe(
-////===============这里是第二部分B===============
-//                new Observer<String>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//                    }
-//                    @Override
-//                    public void onNext(String value) {
-//                    }
-//                    @Override
-//                    public void onError(Throwable e) {
-//                    }
-//                    @Override
-//                    public void onComplete() {
-//                    }
-//                }
-////===============这里是第二部分B===============
-//        );
-//
         Observable.create(e -> {
             metaCoinContract.sendCoin(receiverAddress, sendAmount).send();
             e.onNext(new Object());
@@ -263,25 +260,12 @@ public class SampleContractActivity extends SimpleActivity {
                 String address = data.getStringExtra("address");
                 tvAddress.setText(address);
                 Observable.create((ObservableOnSubscribe<TutorialToken>) emitter -> {
-                    // TODO: 2018/3/3 合约调用前要先部署 ,已经部署过直接load
-//                    MetaCoin metaCoinContract = MetaCoin.load(metaCoinContractAddress,
-//                            Web3JService.getInstance(), KeyStoreUtils.getCredentials(address),
-//                            new BigInteger(gasPrice),
-//                            new BigInteger(gasLimit));
-
-                    TutorialToken tutorialToken = TutorialToken.load(ttCoinContractAddress,
+                    TutorialToken tutorialToken = TutorialToken.load(Constants.TT_COIN_CONTRACT_ADDRESS,
                             Web3JService.getInstance(), KeyStoreUtils.getCredentials(address),
                             new BigInteger(gasPrice),
                             new BigInteger(gasLimit));
 
-
-//                    SampleContract sampleContract = new SampleContract(contractAddress,
-//                            Web3JService.getInstance(),
-//                            KeyStoreUtils.getCredentials(address),
-//                            new BigInteger(gasPrice),
-//                            new BigInteger(gasLimit));
                     emitter.onNext(tutorialToken);
-//                    emitter.onNext(metaCoinContract);
                     emitter.onComplete();
 
                 })
@@ -289,7 +273,6 @@ public class SampleContractActivity extends SimpleActivity {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(tutorialToken -> {
                             this.tutorialToken = tutorialToken;
-//                            this.metaCoinContract = metaCoinContract;
                             ToastUtil.show("合约加载完成");
                         }, throwable -> throwable.printStackTrace())
                 ;

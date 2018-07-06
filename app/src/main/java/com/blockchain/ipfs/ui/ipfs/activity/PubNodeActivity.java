@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.blockchain.ipfs.app.App;
@@ -25,10 +27,15 @@ import com.blockchain.ipfs.base.SimpleActivity;
 import com.blockchain.ipfs.model.bean.IpfsNodeBean;
 import com.blockchain.ipfs.util.ToastUtil;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.ipfs.api.IPFSAnroid;
 import com.ipfs.api.entity.FileAdd;
 import com.ipfs.api.entity.NameEntity;
 import com.socks.library.KLog;
+
+import org.json.JSONArray;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,6 +43,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -65,6 +73,9 @@ public class PubNodeActivity extends SimpleActivity {
     @BindView(R.id.btn_pub_name)
     Button btn_pub_name;
 
+
+    @BindView(R.id.pb_update)
+    ProgressBar pb_update;
 
 
     private String mDataFilename;
@@ -98,15 +109,15 @@ public class PubNodeActivity extends SimpleActivity {
      */
     @OnClick(R.id.btn_pub_data)
     public void pubData() {
-        String dataJson = new Gson().toJson(App.getInstance().mDaoSession.getImageBeanDao().loadAll()).toString();
+
+//        JsonArray jsonArray = new JsonParser().parse(new Gson().toJson(App.getInstance().mDaoSession.getImageBeanDao().loadAll())).getAsJsonArray();
+//        JsonObject jsonObject = new JsonObject();
+//        jsonObject.add("imageBeanList", jsonArray);
+//        jsonObject.addProperty("totalPrice", String.valueOf(totalPrice));
+
+        String dataJson = new Gson().toJson(App.getInstance().mDaoSession.getImageBeanDao().loadAll());
         Writer writer = null;
-        File dataFile = null;
         try {
-//            dataFile = new File(mDataFilename);
-//            if (!dataFile.exists()) {
-//                dataFile.createNewFile();
-//                dataFile.setExecutable(true);
-//            }
             OutputStream out = mContext.openFileOutput(mDataFilename,
                     Context.MODE_PRIVATE);
             writer = new OutputStreamWriter(out);
@@ -143,18 +154,25 @@ public class PubNodeActivity extends SimpleActivity {
                 ToastUtil.show(t.getMessage());
 //                tv_ipfs_status.setText(t.getMessage());
             }
-        }, new File(mContext.getFilesDir() +"/" + mDataFilename), mDataFilename);
+        }, new File(mContext.getFilesDir() + "/" + mDataFilename), mDataFilename);
 
     }
 
     @OnClick(R.id.btn_pub_node)
     public void pubNode() {
+        List<ImageBean> imageBeanList = App.getInstance().mDaoSession.getImageBeanDao().loadAll();
+        double totalPrice = 0L;
+        for (ImageBean imageBean : imageBeanList) {
+            totalPrice += imageBean.getPrice();
+        }
         Intent intent = new Intent(this, PubActivity.class);
         Bundle b = new Bundle();
-        b.putString(Constants.IPFS_NODE_HASH, mNodeHash);
+        b.putString(Constants.IPFS_NODE_HASH, "NodeHash:" + mNodeHash + ";TotalPrice:" +
+                String.valueOf(totalPrice) +";RECEIVER_ADDRESS:"+App.getMainWalletAddress());
         intent.putExtras(b);
         startActivity(intent);
     }
+
 
     @OnClick(R.id.btn_pub_name)
     public void namePublsih() {
@@ -162,6 +180,7 @@ public class PubNodeActivity extends SimpleActivity {
             ToastUtil.show("Node Data Hash 为空");
             return;
         }
+        pb_update.setVisibility(View.VISIBLE);
         IPFSAnroid ipfsAnroid = new IPFSAnroid();
         ipfsAnroid.name().publish(new Callback<NameEntity>() {
 
@@ -171,10 +190,12 @@ public class PubNodeActivity extends SimpleActivity {
                 KLog.d("IPFS" + response.body().getName());
                 mNodeHash = response.body().getName();
                 btn_pub_node.setEnabled(true);
+                pb_update.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<NameEntity> call, Throwable t) {
+                pb_update.setVisibility(View.GONE);
                 KLog.e("IPFS" + t.getMessage());
             }
 

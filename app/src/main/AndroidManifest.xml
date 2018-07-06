@@ -61,6 +61,8 @@
             android:name=".ui.zhihu.activity.CommentActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
+
         <activity
             android:name=".ui.zhihu.activity.ThemeActivity"
             android:launchMode="singleTop"
@@ -79,8 +81,24 @@
             android:name=".ui.ipfs.activity.PubActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.ipfs.activity.GetFileActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.ipfs.activity.SubActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.ipfs.activity.IpfsBootstrapAddActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.ipfs.activity.IpfsSwarmPeersActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
