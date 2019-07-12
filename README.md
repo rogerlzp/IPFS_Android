@@ -4,6 +4,23 @@
 
 IPFS, 整体架构学习GeekNews，结合IPFS和钱包的功能，给用户通过去中心化的节点来分享的功能。
 
+key steps:
+provider part
+1. copy ipfs binary to a directory in android app
+2. start ipfs daemon, with option --enable-pubsub-experiment
+3. add a file (take a picture for example), the hash of the file, set the description of the file, and the number of token should be payed to get the file, save this bean in the sqlite database . you may put more files.
+4. add the json file for these files generated from sqlite database, get the hash of this json file
+5. name publish the hash of json file, so that others can find it by the hash of the node
+6. pubsub the node with the topic “PUBLISH_NODE”, the data is "NAMEHASH:#nodehash;TOTAL_PRICE:100;PUBLISH_WALLET_ADDRESS:#walletAddress; others who subscribe the topic will get the hash of the node
+
+consumer part:
+1. sub the topic “PUBLISH_NODE”, get the hash of the node, the total price of the node, and the wallet address, save them into local database
+2. choose one node, load the contract of the TOKEN used, get the PUBLISH_WALLET_ADDRESS, your wallet address, and how much token, click to pay it, which will run the smart contract to transfer the token from your wallet address to the PUBLISH_WALLET_ADDRESS.
+3. after pay for it, get the json file
+4. show the images listed in the json file.
+
+People can sell their digital file with this app, no center server is used, and no one can stop it.
+Also there are several issues should be resolved carefully, especially in the encryption step to make sure the digital product can be decrypted correctly only after payed.
 
 ## Version
 
