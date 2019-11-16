@@ -27,17 +27,6 @@ Also there are several issues should be resolved carefully, especially in the en
 
 1.提交第一版
 
-## Thanks
-
-### APP:
-[Hot](https://github.com/zj-wukewei/Hot) 提供了Dagger2配合MVP的架构思路
-
-
-
-### RES:
-[iconfont](http://www.iconfont.cn/) 提供了icon素材
-
-[material UP](http://www.material.uplabs.com/) 提供了Material Design风格的素材
 
 ### LIB:
 #### UI
